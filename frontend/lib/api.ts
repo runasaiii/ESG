@@ -134,6 +134,18 @@ export interface SearchResult {
   };
 }
 
+export interface LeaderboardEntry {
+  rank: number;
+  id: number;
+  first_name: string;
+  last_name?: string;
+  avatar?: string;
+  help_count: number;
+  average_rating: number;
+  rating_count: number;
+  badge?: string;
+}
+
 export interface NewsItem {
   id: number;
   title: string;
@@ -211,6 +223,24 @@ class ApiClient {
     });
   }
 
+  async rateHelper(
+    appId: number,
+    helperId: number,
+    ratingValue: number,
+    comment?: string
+  ): Promise<{ success: boolean; message: string }> {
+    const { data } = await api.post(`/applications/${appId}/rate-helper`, {
+      helper_id: helperId,
+      rating_value: ratingValue,
+      comment,
+    });
+    return data;
+  }
+
+  async markApplicationFalse(appId: number): Promise<void> {
+    await api.post(`/applications/${appId}/mark-false`);
+  }
+
   async createSOS(latitude: number, longitude: number): Promise<void> {
     await api.post('/sos', { latitude, longitude });
   }
@@ -224,6 +254,16 @@ class ApiClient {
 
   async search(query: string): Promise<SearchResult> {
     const { data } = await api.get<SearchResult>('/search', { params: { q: query } });
+    return data;
+  }
+
+  async searchCities(query: string): Promise<{ cities: string[] }> {
+    const { data } = await api.get<{ cities: string[] }>('/cities/search', { params: { q: query } });
+    return data;
+  }
+
+  async getLeaderboard(): Promise<LeaderboardEntry[]> {
+    const { data } = await api.get<LeaderboardEntry[]>('/leaderboard');
     return data;
   }
 
@@ -279,6 +319,17 @@ class ApiClient {
 
   async getTelegramBotInfo() {
     const { data } = await api.get('/telegram-bot-info');
+    return data;
+  }
+
+  async linkTelegram(
+    telegramId: string,
+    telegramUsername?: string
+  ): Promise<{ success: boolean; message?: string; error?: string; telegram_id?: string }> {
+    const { data } = await api.post('/link-telegram', {
+      telegram_id: telegramId,
+      telegram_username: telegramUsername,
+    });
     return data;
   }
 
