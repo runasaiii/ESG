@@ -60,6 +60,12 @@ const translations: Record<Language, TranslationDict> = {
         submitError: 'Ошибка при создании заявки. Попробуйте еще раз.',
       },
     },
+    applications: {
+      title: 'Все заявки',
+      noResults: 'Заявок не найдено',
+      details: 'Подробнее',
+      categories: 'Категории:',
+    },
     auth: {
       login: {
         title: 'Вход в систему',
@@ -95,10 +101,15 @@ const translations: Record<Language, TranslationDict> = {
       },
     },
     categories: {
+      all: 'Все',
       food: 'Продукты',
       medicine: 'Медицина',
       shelter: 'Убежище',
       emergency: 'Экстренная помощь',
+      
+    },
+     map: {
+      legend: 'Легенда',
     },
     search: {
       placeholder: 'Поиск заявок, людей, городов...',
@@ -215,6 +226,12 @@ const translations: Record<Language, TranslationDict> = {
         submitError: 'Өтінішті жасау кезінде қате пайда болды. Қайталап көріңіз.',
       },
     },
+    applications: {
+      title: 'Барлық өтінімдер',
+      noResults: 'Өтінімдер табылмады',
+      details: 'Толығырақ',
+      categories: 'Санаттар:',
+    },
     auth: {
       login: {
         title: 'Жүйеге кіру',
@@ -250,10 +267,14 @@ const translations: Record<Language, TranslationDict> = {
       },
     },
     categories: {
+      all: 'Барлығы',
       food: 'Азық-түлік',
       medicine: 'Медицина',
       shelter: 'Пана',
       emergency: 'Шұғыл көмек',
+    },
+     map: {
+      legend: 'Легенда',
     },
     search: {
       placeholder: 'Өтініштерді, адамдарды, қалаларды іздеу...',
@@ -370,6 +391,12 @@ const translations: Record<Language, TranslationDict> = {
         submitError: 'Error creating application. Please try again.',
       },
     },
+    applications: {
+      title: 'All Applications',
+      noResults: 'No applications found',
+      details: 'Details',
+      categories: 'Categories:',
+    },
     auth: {
       login: {
         title: 'Sign in',
@@ -405,10 +432,14 @@ const translations: Record<Language, TranslationDict> = {
       },
     },
     categories: {
+      all: 'All',
       food: 'Food',
       medicine: 'Medicine',
       shelter: 'Shelter',
       emergency: 'Emergency',
+    },
+    map: {
+      legend: 'Legend',
     },
     search: {
       placeholder: 'Search applications, people, cities...',

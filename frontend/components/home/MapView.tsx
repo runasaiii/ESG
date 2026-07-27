@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslation } from '@/lib/i18n';
+import { useStore } from '@/lib/store';
 import CategoryBadge from '@/components/common/CategoryBadge';
 import { Application } from '@/lib/api';
 import dynamic from 'next/dynamic';
@@ -27,6 +29,8 @@ const MapInitializer = dynamic(
   { ssr: false }
 );
 
+
+
 interface MapViewProps {
   applications: Application[];
   center?: [number, number];
@@ -48,9 +52,13 @@ function MapCenterController({ center }: { center?: [number, number] }) {
 }
 
 export default function MapView({ applications, center }: MapViewProps) {
+  const { language } = useStore();
+  const t = useTranslation(language);
+
   const [isClient, setIsClient] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
   const [mapKey, setMapKey] = useState(0);
+  
 
   useEffect(() => {
     setIsClient(true);
@@ -81,19 +89,26 @@ export default function MapView({ applications, center }: MapViewProps) {
     );
   }
 
-  const categories: { key: CategoryFilter; label: string; category: 'food' | 'medicine' | 'shelter' | 'emergency' }[] = [
-    { key: 'food', label: 'ПРОДУКТЫ', category: 'food' },
-    { key: 'medicine', label: 'МЕДИЦИНА', category: 'medicine' },
-    { key: 'shelter', label: 'УБЕЖИЩЕ', category: 'shelter' },
-    { key: 'emergency', label: 'ЭКСТРЕННАЯ ПОМОЩЬ', category: 'emergency' }
-  ];
+const categories: {
+  key: CategoryFilter;
+  label: string;
+  category?: 'food' | 'medicine' | 'shelter' | 'emergency';
+}[] = [
+  { key: 'all', label: t('categories.all') },
+  { key: 'food', label: t('categories.food'), category: 'food' },
+  { key: 'medicine', label: t('categories.medicine'), category: 'medicine' },
+  { key: 'shelter', label: t('categories.shelter'), category: 'shelter' },
+  { key: 'emergency', label: t('categories.emergency'), category: 'emergency' },
+];
 
   return (
     <div className="w-full max-w-full overflow-hidden">
       <div className="bg-white rounded-lg shadow-md p-4 mb-4">
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-sm text-gray-600 font-semibold">Легенда:</span>
-          {categories.map(({ key, category }) => (
+          <span className="text-sm text-gray-600 font-semibold">
+          {t('map.legend')}
+        </span>
+          {categories.map(({ key, category, label }) => (
             <button
               key={key}
               onClick={() => handleCategoryClick(key)}
@@ -103,7 +118,13 @@ export default function MapView({ applications, center }: MapViewProps) {
                   : 'hover:scale-105'
               }`}
             >
-              <CategoryBadge category={category} />
+              {key === 'all' ? (
+                <span className="inline-flex items-center rounded-full border border-gray-300 bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                  {label}
+                </span>
+              ) : (
+                <CategoryBadge category={category!} />
+              )}
             </button>
           ))}
         </div>
