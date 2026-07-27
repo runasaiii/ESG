@@ -12,6 +12,12 @@ interface User {
   rating_count?: number;
   avatar?: string;
   badge?: string;
+  is_blocked?: boolean;
+  blocked_until?: string;
+  blocked_reason?: string;
+
+  telegram_id?: string | null;
+  telegram_username?: string | null;
 }
 
 interface StoreState {

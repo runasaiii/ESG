@@ -37,6 +37,8 @@ export interface User {
   is_blocked?: boolean;
   blocked_until?: string;
   blocked_reason?: string;
+  telegram_id?: string | null;
+  telegram_username?: string | null;
   total_applications?: number;
   active_applications?: number;
   resolved_applications?: number;
@@ -50,16 +52,23 @@ export interface User {
     created_at: string;
     rater: { first_name: string; last_name?: string };
   }>;
+  
 }
+
+export type Category =
+  | 'emergency'
+  | 'food'
+  | 'medicine'
+  | 'shelter';
 
 export interface Application {
   id: number;
   number?: number;
   description: string;
-  latitude?: number;
-  longitude?: number;
+  latitude: number;
+  longitude: number;
   address?: string;
-  category: string;
+  category: Category;
   date?: string;
   created_at?: string;
   expires_at?: string;
@@ -77,7 +86,7 @@ export interface Application {
     last_name?: string;
     avatar?: string;
   };
-  priority?: number;
+  priority: number;
   city?: string;
   region?: string;
   location?: string;
