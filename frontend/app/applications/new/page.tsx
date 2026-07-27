@@ -323,23 +323,23 @@ export default function NewApplicationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div className="card mb-8">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="bg-blue-50 p-3 rounded-md border border-blue-200">
-              <FileText className="w-8 h-8 text-blue-600" />
+    <div className="min-h-screen bg-gray-50 py-5 sm:py-12">
+      <div className="container mx-auto px-3 sm:px-4 max-w-4xl">
+        <div className="card p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="flex items-center space-x-3 mb-5 sm:mb-6">
+            <div className="bg-blue-50 p-2.5 sm:p-3 rounded-md border border-blue-200 flex-shrink-0">
+              <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-blue-700">{t('application.form.title')}</h1>
-              <p className="text-gray-600 mt-1 text-sm">{t('application.form.subtitle')}</p>
+              <h1 className="text-xl sm:text-3xl font-bold text-blue-700 leading-tight">{t('application.form.title')}</h1>
+              <p className="text-gray-600 mt-1 text-xs sm:text-sm">{t('application.form.subtitle')}</p>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                <Search className="w-5 h-5 mr-2 text-blue-600" />
+              <label className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center">
+                <Search className="w-5 h-5 mr-2 text-blue-600 flex-shrink-0" />
                 Выберите город
               </label>
               <div className="relative">
@@ -348,7 +348,7 @@ export default function NewApplicationPage() {
                   value={citySearch}
                   onChange={(e) => setCitySearch(e.target.value)}
                   onFocus={() => citySuggestions.length > 0 && setShowCitySuggestions(true)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all bg-white"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all bg-white text-base"
                   placeholder="Введите название города для поиска..."
                 />
                 {showCitySuggestions && citySuggestions.length > 0 && (
@@ -358,7 +358,7 @@ export default function NewApplicationPage() {
                         key={index}
                         type="button"
                         onClick={() => selectCity(city)}
-                        className="w-full text-left px-4 py-2 hover:bg-blue-50 transition-colors"
+                        className="w-full text-left px-4 py-2.5 sm:py-2 hover:bg-blue-50 active:bg-blue-100 transition-colors"
                       >
                         {city}
                       </button>
@@ -369,13 +369,14 @@ export default function NewApplicationPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                <MapPin className="w-5 h-5 mr-2 text-blue-600" />
+              <label className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center">
+                <MapPin className="w-5 h-5 mr-2 text-blue-600 flex-shrink-0" />
                 {t('application.form.selectLocation')}
               </label>
+              
               <div
-                className="border border-gray-300 rounded-md overflow-hidden shadow-sm w-full relative"
-                style={{ height: '450px', position: 'relative', isolation: 'isolate' }}
+                className="border border-gray-300 rounded-md overflow-hidden shadow-sm w-full relative h-56 sm:h-80 lg:h-[450px]"
+                style={{ position: 'relative', isolation: 'isolate' }}
               >
                 <div
                   className="w-full h-full relative overflow-hidden"
@@ -398,17 +399,17 @@ export default function NewApplicationPage() {
               </div>
               {errors.location && (
                 <p className="mt-2 text-sm text-red-600 flex items-center">
-                  <AlertCircle className="w-4 h-4 mr-1" />
+                  <AlertCircle className="w-4 h-4 mr-1 flex-shrink-0" />
                   {errors.location}
                 </p>
               )}
-              <p className="mt-3 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg">
+              <p className="mt-3 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg break-words">
                 <strong>{t('application.form.selected')}:</strong> {formData.address || `${formData.latitude.toFixed(6)}, ${formData.longitude.toFixed(6)}`}
               </p>
             </div>
 
             <div>
-              <label htmlFor="category" className="block text-sm font-semibold text-gray-700 mb-3">
+              <label htmlFor="category" className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3">
                 {t('application.form.category')}
               </label>
               <select
@@ -419,7 +420,7 @@ export default function NewApplicationPage() {
                   setFormData({ ...formData, category });
                   setIsResourcePoint(['food', 'medicine', 'shelter'].includes(category));
                 }}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all bg-white"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all bg-white text-base"
                 required
               >
                 <option value="food">{t('categories.food')}</option>
@@ -429,10 +430,9 @@ export default function NewApplicationPage() {
               </select>
             </div>
 
-            {/* Специальная форма для точек ресурсов */}
             {isResourcePoint && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-blue-900 mb-3">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-semibold text-blue-900 mb-2 sm:mb-3">
                   Подтверждение точки ресурсов
                 </h3>
                 <p className="text-sm text-blue-700 mb-4">
@@ -440,11 +440,11 @@ export default function NewApplicationPage() {
                   что по указанному адресу действительно зарегистрирована точка выдачи ресурсов.
                 </p>
                 <div>
-                  <label htmlFor="verification_document" className="block text-sm font-semibold text-gray-700 mb-3">
+                  <label htmlFor="verification_document" className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3">
                     Документ подтверждения (опционально)
                   </label>
                   <div className="space-y-3">
-                    <div className="border-2 border-dashed border-blue-300 rounded-lg p-4 hover:border-blue-500 transition-colors">
+                    <div className="border-2 border-dashed border-blue-300 rounded-lg p-4 hover:border-blue-500 active:border-blue-500 transition-colors">
                       <input
                         type="file"
                         id="verification_document"
@@ -460,7 +460,6 @@ export default function NewApplicationPage() {
                             const newErrors = { ...errors };
                             delete newErrors.verification;
                             setErrors(newErrors);
-                            // Для PDF не создаем превью, просто показываем имя файла
                           }
                         }}
                         className="hidden"
@@ -479,11 +478,11 @@ export default function NewApplicationPage() {
                       </label>
                     </div>
                     {verificationDocument && (
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-300">
-                        <div className="flex items-center space-x-3">
-                          <FileText className="w-6 h-6 text-red-500" />
-                          <div>
-                            <p className="text-sm font-medium">{verificationDocument.name}</p>
+                      <div className="flex items-center justify-between gap-2 p-3 bg-white rounded-lg border border-gray-300">
+                        <div className="flex items-center space-x-3 min-w-0">
+                          <FileText className="w-6 h-6 text-red-500 flex-shrink-0" />
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium truncate">{verificationDocument.name}</p>
                             <p className="text-xs text-gray-500">
                               {(verificationDocument.size / 1024).toFixed(2)} KB
                             </p>
@@ -495,7 +494,7 @@ export default function NewApplicationPage() {
                             setVerificationDocument(null);
                             setVerificationDocumentPreview(null);
                           }}
-                          className="text-red-500 hover:text-red-700"
+                          className="text-red-500 hover:text-red-700 flex-shrink-0 p-1"
                         >
                           <X className="w-5 h-5" />
                         </button>
@@ -503,7 +502,7 @@ export default function NewApplicationPage() {
                     )}
                     {errors.verification && (
                       <p className="text-sm text-red-600 flex items-center">
-                        <AlertCircle className="w-4 h-4 mr-1" />
+                        <AlertCircle className="w-4 h-4 mr-1 flex-shrink-0" />
                         {errors.verification}
                       </p>
                     )}
@@ -513,7 +512,7 @@ export default function NewApplicationPage() {
             )}
 
             <div>
-              <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-3">
+              <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3">
                 {t('application.form.description')}
               </label>
               <textarea
@@ -526,17 +525,17 @@ export default function NewApplicationPage() {
                   }
                 }}
                 rows={6}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all resize-none bg-white"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all resize-none bg-white text-base"
                 placeholder={t('application.form.descriptionPlaceholder')}
                 required
               />
-              <div className="mt-2 flex justify-between items-center text-sm">
+              <div className="mt-2 flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-1 text-sm">
                 <span className={`${formData.description.length > MAX_DESCRIPTION_LENGTH * 0.9 ? 'text-red-600' : 'text-gray-500'}`}>
                   {formData.description.length} / {MAX_DESCRIPTION_LENGTH} {t('application.form.characters')}
                 </span>
                 {errors.description && (
                   <span className="text-red-600 flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
+                    <AlertCircle className="w-4 h-4 mr-1 flex-shrink-0" />
                     {errors.description}
                   </span>
                 )}
@@ -544,22 +543,24 @@ export default function NewApplicationPage() {
             </div>
 
             <div>
-              <label htmlFor="media_files" className="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                <ImageIcon className="w-5 h-5 mr-2 text-blue-600" />
+              <label htmlFor="media_files" className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center">
+                <ImageIcon className="w-5 h-5 mr-2 text-blue-600 flex-shrink-0" />
                 Медиафайлы <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="space-y-3">
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-500 transition-colors">
+                
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-5 sm:p-6 hover:border-blue-500 active:border-blue-500 transition-colors">
                   <input
                     type="file"
                     id="media_files"
                     multiple
                     accept="image/*,.pdf"
+                    capture="environment"
                     onChange={(e) => {
                       const files = Array.from(e.target.files || []);
                       if (files.length > 0) {
                         setMediaFiles(files);
-                        // Создаем превью для изображений
+                        
                         const previews: string[] = [];
                         files.forEach((file) => {
                           if (file.type.startsWith('image/')) {
@@ -587,7 +588,7 @@ export default function NewApplicationPage() {
                   >
                     <Upload className="w-10 h-10 text-gray-400 mb-2" />
                     <span className="text-sm font-medium text-gray-700">
-                      Нажмите для загрузки файлов
+                      Нажмите, чтобы сделать фото или выбрать файлы
                     </span>
                     <span className="text-xs text-gray-500 mt-1">
                       Изображения или PDF (макс. 50MB каждый)
@@ -595,20 +596,21 @@ export default function NewApplicationPage() {
                   </label>
                 </div>
                 {mediaFiles.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
                     {mediaFiles.map((file, index) => (
                       <div key={index} className="relative group">
                         {file.type.startsWith('image/') && mediaPreviews[index] ? (
                           <img
                             src={mediaPreviews[index]}
                             alt={`Preview ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg border border-gray-300"
+                            className="w-full h-28 sm:h-32 object-cover rounded-lg border border-gray-300"
                           />
                         ) : (
-                          <div className="w-full h-32 bg-gray-100 rounded-lg border border-gray-300 flex items-center justify-center">
+                          <div className="w-full h-28 sm:h-32 bg-gray-100 rounded-lg border border-gray-300 flex items-center justify-center">
                             <FileText className="w-8 h-8 text-gray-400" />
                           </div>
                         )}
+                       
                         <button
                           type="button"
                           onClick={() => {
@@ -619,7 +621,7 @@ export default function NewApplicationPage() {
                               setMediaPreviews(newPreviews);
                             }
                           }}
-                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1.5 sm:p-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -630,7 +632,7 @@ export default function NewApplicationPage() {
                 )}
                 {errors.media && (
                   <p className="mt-2 text-sm text-red-600 flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
+                    <AlertCircle className="w-4 h-4 mr-1 flex-shrink-0" />
                     {errors.media}
                   </p>
                 )}
@@ -638,15 +640,15 @@ export default function NewApplicationPage() {
             </div>
 
             <div>
-              <label htmlFor="expires_days" className="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                <Calendar className="w-5 h-5 mr-2 text-blue-600" />
+              <label htmlFor="expires_days" className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3 flex items-center">
+                <Calendar className="w-5 h-5 mr-2 text-blue-600 flex-shrink-0" />
                 {t('application.form.expires')}
               </label>
               <select
                 id="expires_days"
                 value={formData.expires_days}
                 onChange={(e) => setFormData({ ...formData, expires_days: parseInt(e.target.value) })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all bg-white"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all bg-white text-base"
               >
                 <option value="3">{t('application.form.days3')}</option>
                 <option value="7">{t('application.form.days7')}</option>
@@ -656,9 +658,9 @@ export default function NewApplicationPage() {
             </div>
 
             {errors.submit && (
-              <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-md flex items-center">
-                <AlertCircle className="w-5 h-5 mr-2" />
-                {errors.submit}
+              <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-md flex items-start sm:items-center">
+                <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
+                <span className="text-sm sm:text-base">{errors.submit}</span>
               </div>
             )}
 
@@ -681,11 +683,12 @@ export default function NewApplicationPage() {
               </div>
             )}
 
-            <div className="flex gap-4 pt-4">
+           
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4">
               <button
                 type="submit"
                 disabled={loading || !!(blockedInfo && blockedInfo.blocked_until)}
-                className="flex-1 btn btn-primary flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="order-1 w-full sm:flex-1 btn btn-primary flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>
@@ -702,7 +705,7 @@ export default function NewApplicationPage() {
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors flex items-center space-x-2"
+                className="order-2 w-full sm:w-auto px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors flex items-center justify-center space-x-2"
               >
                 <X className="w-5 h-5" />
                 <span>{t('common.cancel')}</span>

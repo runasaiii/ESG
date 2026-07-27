@@ -136,15 +136,15 @@ export default function ApplicationDetailPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
+    <div className="container mx-auto px-3 py-5 sm:px-4 sm:py-8">
+      <div className="mb-4 sm:mb-6">
         <button
           onClick={() => router.back()}
-          className="text-primary hover:underline mb-4"
+          className="text-primary hover:underline mb-3 sm:mb-4 -ml-1 px-1 py-1 inline-flex items-center gap-1"
         >
           ← Назад
         </button>
-        <div className="flex items-center space-x-2 mb-4">
+        <div className="flex items-center flex-wrap gap-2 mb-3 sm:mb-4">
           <CategoryBadge category={application.category} />
           {application.is_sos && (
             <span className="badge badge-danger">SOS</span>
@@ -153,27 +153,27 @@ export default function ApplicationDetailPage() {
             <span className="badge badge-success">Решена</span>
           )}
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4 break-words">
           Заявка #{application.id}
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Левая колонка - Карта */}
-        <div className="space-y-6">
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Местоположение</h2>
-            <div className="flex items-center space-x-2 text-gray-600 mb-4">
-              <MapPin className="w-5 h-5" />
-              <span className="text-sm">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+       
+        <div className="space-y-4 sm:space-y-6 order-2 lg:order-1">
+          <div className="card p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Местоположение</h2>
+            <div className="flex items-start gap-2 text-gray-600 mb-3 sm:mb-4">
+              <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <span className="text-sm break-words">
                 {(application as any).address || `${application.latitude.toFixed(4)}, ${application.longitude.toFixed(4)}`}
               </span>
             </div>
             {isClient && (
+              
               <div 
-                className="w-full rounded-lg relative" 
+                className="w-full rounded-lg relative h-56 sm:h-80 lg:h-[500px]" 
                 style={{ 
-                  height: '500px', 
                   maxWidth: '100%', 
                   overflow: 'hidden',
                   position: 'relative',
@@ -200,35 +200,35 @@ export default function ApplicationDetailPage() {
           </div>
         </div>
 
-        {/* Правая колонка - Детали */}
-        <div className="space-y-6">
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Описание</h2>
-            <p className="text-gray-700 whitespace-pre-wrap">
+        
+        <div className="space-y-4 sm:space-y-6 order-1 lg:order-2">
+          <div className="card p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Описание</h2>
+            <p className="text-gray-700 whitespace-pre-wrap text-sm sm:text-base leading-relaxed">
               {application.description}
             </p>
           </div>
 
           {application.media_files && application.media_files.length > 0 && (
-            <div className="card">
-              <h2 className="text-xl font-semibold mb-4">Медиафайлы</h2>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="card p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Медиафайлы</h2>
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
                 {application.media_files.map((media) => (
                   <div key={media.id} className="relative">
                     {media.file_type?.startsWith('image/') ? (
                       <img
                         src={`/api/uploads/${media.file_path}`}
                         alt="Media"
-                        className="w-full h-48 object-cover rounded-lg"
+                        className="w-full h-32 sm:h-48 object-cover rounded-lg"
                       />
                     ) : (
                       <a
                         href={`/api/uploads/${media.file_path}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block p-4 bg-gray-100 rounded-lg text-center hover:bg-gray-200"
+                        className="block p-3 sm:p-4 h-32 sm:h-48 bg-gray-100 rounded-lg text-center hover:bg-gray-200 flex flex-col items-center justify-center"
                       >
-                        <span className="text-sm text-gray-600">📄 {media.file_path}</span>
+                        <span className="text-sm text-gray-600 break-all line-clamp-2">📄 {media.file_path}</span>
                       </a>
                     )}
                   </div>
@@ -237,23 +237,24 @@ export default function ApplicationDetailPage() {
             </div>
           )}
 
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Информация</h2>
+          <div className="card p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Информация</h2>
+            
             <div className="space-y-3 text-sm">
               {(application as any).creator && (
-                <div className="flex items-center justify-between pb-2 border-b">
+                <div className="flex items-center justify-between flex-wrap gap-1 pb-2 border-b">
                   <span className="text-gray-600 flex items-center space-x-2">
                     <User className="w-4 h-4" />
                     <span>Создал:</span>
                   </span>
-                  <span className="font-medium">
+                  <span className="font-medium text-right">
                     {(application as any).creator.first_name} {(application as any).creator.last_name || ''}
                   </span>
                 </div>
               )}
-              <div className="flex justify-between">
+              <div className="flex justify-between flex-wrap gap-1">
                 <span className="text-gray-600">Дата создания:</span>
-                <span className="font-medium">
+                <span className="font-medium text-right">
                   {application.date
                     ? new Date(application.date).toLocaleDateString('ru-RU', {
                         day: 'numeric',
@@ -265,9 +266,9 @@ export default function ApplicationDetailPage() {
                     : '—'}
                 </span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between flex-wrap gap-1">
                 <span className="text-gray-600">Действует до:</span>
-                <span className="font-medium">
+                <span className="font-medium text-right">
                   {application.expires_at
                     ? new Date(application.expires_at).toLocaleDateString('ru-RU', {
                         day: 'numeric',
@@ -280,14 +281,14 @@ export default function ApplicationDetailPage() {
                 </span>
               </div>
               {(application as any).duration_days && (
-                <div className="flex justify-between">
+                <div className="flex justify-between flex-wrap gap-1">
                   <span className="text-gray-600">Длительность:</span>
                   <span className="font-medium">
                     {(application as any).duration_days} дн.
                   </span>
                 </div>
               )}
-              <div className="flex justify-between">
+              <div className="flex justify-between flex-wrap gap-1">
                 <span className="text-gray-600">Статус:</span>
                 <span className="font-medium">{application.status}</span>
               </div>
@@ -295,16 +296,16 @@ export default function ApplicationDetailPage() {
           </div>
 
           {responses.length > 0 && (
-            <div className="card">
-              <h2 className="text-xl font-semibold mb-4">Отклики</h2>
+            <div className="card p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Отклики</h2>
               <div className="space-y-3">
                 {responses.map((response) => (
                   <div
                     key={response.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-gray-50 rounded-lg"
                   >
                     <div className="flex items-center space-x-3">
-                      <User className="w-5 h-5 text-gray-500" />
+                      <User className="w-5 h-5 text-gray-500 flex-shrink-0" />
                       <div>
                         <Link 
                           href={`/users/${response.responder_id}`}
@@ -318,16 +319,16 @@ export default function ApplicationDetailPage() {
                       </div>
                     </div>
                     {response.status === 'pending' && (application as any).user_id === user?.id && (
-                      <div className="flex space-x-2">
+                      <div className="flex gap-2 w-full sm:w-auto">
                         <button
                           onClick={() => handleAcceptResponse(response.id)}
-                          className="btn btn-success text-sm"
+                          className="btn btn-success text-sm flex-1 sm:flex-none flex items-center justify-center"
                         >
                           <Check className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleRejectResponse(response.id)}
-                          className="btn btn-danger text-sm"
+                          className="btn btn-danger text-sm flex-1 sm:flex-none flex items-center justify-center"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -340,8 +341,8 @@ export default function ApplicationDetailPage() {
           )}
 
           {application.is_resolved && acceptedVolunteers.length > 0 && (application as any).user_id === user?.id && (
-            <div className="card">
-              <h2 className="text-xl font-semibold mb-4">Оцените волонтеров</h2>
+            <div className="card p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Оцените волонтеров</h2>
               <p className="text-sm text-gray-600 mb-4">
                 Пожалуйста, оцените волонтеров, которые помогли с этой заявкой
               </p>
@@ -349,10 +350,10 @@ export default function ApplicationDetailPage() {
                 {acceptedVolunteers.map((volunteer) => (
                   <div
                     key={volunteer.responder_id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-gray-50 rounded-lg"
                   >
                     <div className="flex items-center space-x-3">
-                      <User className="w-5 h-5 text-gray-500" />
+                      <User className="w-5 h-5 text-gray-500 flex-shrink-0" />
                       <div>
                         <Link 
                           href={`/users/${volunteer.responder_id}`}
@@ -373,10 +374,10 @@ export default function ApplicationDetailPage() {
                       </div>
                     </div>
                     {!volunteer.is_rated && (
-                      <div className="flex space-x-2">
+                      <div className="flex gap-2 w-full sm:w-auto">
                         <button
                           onClick={() => handleRateVolunteer(volunteer.responder_id, true)}
-                          className="btn btn-success text-sm flex items-center space-x-1"
+                          className="btn btn-success text-sm flex-1 sm:flex-none flex items-center justify-center space-x-1"
                           title="Плюс"
                         >
                           <ThumbsUp className="w-4 h-4" />
@@ -384,7 +385,7 @@ export default function ApplicationDetailPage() {
                         </button>
                         <button
                           onClick={() => handleRateVolunteer(volunteer.responder_id, false)}
-                          className="btn btn-danger text-sm flex items-center space-x-1"
+                          className="btn btn-danger text-sm flex-1 sm:flex-none flex items-center justify-center space-x-1"
                           title="Минус"
                         >
                           <ThumbsDown className="w-4 h-4" />
@@ -398,17 +399,18 @@ export default function ApplicationDetailPage() {
             </div>
           )}
 
-          <div className="flex space-x-4">
+          
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             {!application.is_resolved && !userResponse && (application as any).user_id !== user?.id && (
               <button
                 onClick={handleRespond}
-                className="btn btn-primary flex-1"
+                className="btn btn-primary w-full sm:flex-1"
               >
                 Откликнуться
               </button>
             )}
             {userResponse && (application as any).user_id !== user?.id && (
-              <div className="text-sm text-gray-600 flex-1 flex items-center justify-center">
+              <div className="text-sm text-gray-600 flex-1 flex items-center justify-center text-center p-3 bg-gray-50 rounded-lg sm:bg-transparent sm:p-0">
                 Вы уже откликнулись на эту заявку. Статус: <span className="ml-2 font-medium">{userResponse.status === 'pending' ? 'Ожидает рассмотрения' : userResponse.status === 'accepted' ? 'Принят' : userResponse.status === 'cancelled' ? 'Отклонен' : userResponse.status === 'completed' ? 'Завершен' : userResponse.status}</span>
               </div>
             )}
@@ -416,7 +418,7 @@ export default function ApplicationDetailPage() {
              ((application as any).user_id === user?.id || userResponse?.status === 'accepted') && (
               <button
                 onClick={handleResolve}
-                className="btn btn-success flex-1"
+                className="btn btn-success w-full sm:flex-1"
               >
                 Отметить как решенную
               </button>

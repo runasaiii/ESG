@@ -279,17 +279,17 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <CursorEffect>
-        <div className="hero-section py-12 mb-8">
-          <div className="container mx-auto px-4 relative z-10">
+        <div className="hero-section py-8 sm:py-12 mb-6 sm:mb-8">
+          <div className="container mx-auto px-3 sm:px-4 relative z-10">
             <div className="text-center text-white">
-              <h1 className="text-4xl font-bold mb-4 text-white">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 text-white">
                 {t('home.hero.title')}
               </h1>
-              <p className="text-lg mb-8 text-blue-100">
+              <p className="text-base sm:text-lg mb-6 sm:mb-8 text-blue-100">
                 {t('home.hero.subtitle')}
               </p>
               {user?.is_authenticated ? (
-                <div className="flex gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-xs sm:max-w-none mx-auto">
                   <button
                     onClick={async () => {
                       if (!navigator.geolocation) {
@@ -315,26 +315,26 @@ export default function HomePage() {
                         }
                       );
                     }}
-                    className="sos-button bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center"
+                    className="sos-button bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center w-full sm:w-auto"
                   >
-                    <AlertCircle className="inline w-5 h-5 mr-2" />
+                    <AlertCircle className="inline w-5 h-5 mr-2 flex-shrink-0" />
                     SOS
                   </button>
-                  <Link href="/applications/new" className="btn bg-white text-blue-700 hover:bg-gray-50 border border-gray-300 px-6 py-3 rounded-lg font-semibold flex items-center">
-                    <AlertCircle className="inline w-5 h-5 mr-2" />
+                  <Link href="/applications/new" className="btn bg-white text-blue-700 hover:bg-gray-50 border border-gray-300 px-6 py-3 rounded-lg font-semibold flex items-center justify-center w-full sm:w-auto">
+                    <AlertCircle className="inline w-5 h-5 mr-2 flex-shrink-0" />
                     {t('home.hero.createApplication')}
                   </Link>
-                  <Link href="/applications" className="btn btn-outline bg-white text-blue-700 border-white hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold flex items-center">
-                    <List className="inline w-5 h-5 mr-2" />
+                  <Link href="/applications" className="btn btn-outline bg-white text-blue-700 border-white hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold flex items-center justify-center w-full sm:w-auto">
+                    <List className="inline w-5 h-5 mr-2 flex-shrink-0" />
                     {t('home.hero.viewAll')}
                   </Link>
                 </div>
               ) : (
-                <div className="flex gap-4 justify-center">
-                  <Link href="/login" className="btn bg-white text-blue-700 hover:bg-gray-50 border border-gray-300">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-xs sm:max-w-none mx-auto">
+                  <Link href="/login" className="btn bg-white text-blue-700 hover:bg-gray-50 border border-gray-300 w-full sm:w-auto text-center">
                     {t('nav.login')}
                   </Link>
-                  <Link href="/sign-up" className="btn bg-blue-500 text-white hover:bg-blue-600 border border-blue-600">
+                  <Link href="/sign-up" className="btn bg-blue-500 text-white hover:bg-blue-600 border border-blue-600 w-full sm:w-auto text-center">
                     {t('nav.signup')}
                   </Link>
                 </div>

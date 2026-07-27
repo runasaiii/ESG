@@ -74,30 +74,31 @@ export default function ApplicationsPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">
+    <div className="container mx-auto py-5 px-3 sm:py-8 sm:px-4">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
         {t('applications.title')}
       </h1>
 
-      {/* Фильтр */}
-      <div className="bg-white rounded-xl shadow border p-4 mb-6">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-semibold text-gray-600">
-            {t('applications.categories')}
-          </span>
+      
+      <div className="bg-white rounded-xl shadow border p-3 sm:p-4 mb-4 sm:mb-6">
+        <span className="block text-sm font-semibold text-gray-600 mb-2 sm:mb-0 sm:inline sm:mr-3">
+          {t('applications.categories')}
+        </span>
 
+       
+        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-hide -mx-1 px-1 sm:mx-0 sm:px-0 sm:flex-wrap sm:overflow-visible">
           {categories.map(({ key, label, category }) => (
             <button
               key={key}
               onClick={() => setSelectedCategory(key)}
-              className={`transition-all duration-200 ${
+              className={`flex-shrink-0 transition-all duration-200 ${
                 selectedCategory === key
                   ? 'ring-2 ring-blue-500 ring-offset-2 scale-105'
-                  : 'hover:scale-105'
+                  : 'active:scale-95 sm:hover:scale-105'
               }`}
             >
               {key === 'all' ? (
-                <span className="px-3 py-1 rounded-full bg-gray-100 border border-gray-300 text-gray-700 text-sm font-semibold">
+                <span className="px-3 py-1.5 sm:py-1 rounded-full bg-gray-100 border border-gray-300 text-gray-700 text-sm font-semibold whitespace-nowrap">
                   {label}
                 </span>
               ) : (
@@ -116,15 +117,15 @@ export default function ApplicationsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid gap-3 sm:gap-6">
           {filteredApplications.map((app) => (
             <div
               key={app.id}
-              className="bg-white rounded-xl shadow border p-6 hover:shadow-lg transition"
+              className="bg-white rounded-xl shadow border p-4 sm:p-6 active:scale-[0.99] sm:active:scale-100 hover:shadow-lg transition"
             >
-              <div className="flex justify-between items-start mb-4">
+              <div className="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-start gap-2 mb-3 sm:mb-4">
                 <div>
-                  <h2 className="font-semibold text-lg mb-3">
+                  <h2 className="font-semibold text-base sm:text-lg mb-2 sm:mb-3 leading-snug">
                     {app.description}
                   </h2>
 
@@ -140,24 +141,24 @@ export default function ApplicationsPage() {
                 </div>
 
                 {app.is_sos && (
-                  <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                  <span className="self-start bg-red-500 text-white px-3 py-1 rounded-full text-sm flex items-center gap-1 animate-pulse-emergency">
                     <AlertTriangle className="w-4 h-4" />
                     SOS
                   </span>
                 )}
               </div>
 
-              <div className="flex gap-6 text-gray-500 text-sm mb-4 flex-wrap">
+              <div className="flex gap-4 sm:gap-6 text-gray-500 text-sm mb-4 flex-wrap">
                 {app.city && (
                   <div className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
+                    <MapPin className="w-4 h-4 flex-shrink-0" />
                     {app.city}
                   </div>
                 )}
 
                 {app.date && (
                   <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
+                    <Calendar className="w-4 h-4 flex-shrink-0" />
                     {new Date(app.date).toLocaleDateString('ru-RU')}
                   </div>
                 )}
@@ -165,7 +166,7 @@ export default function ApplicationsPage() {
 
               <Link
                 href={`/applications/${app.id}`}
-                className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                className="block text-center sm:inline-block w-full sm:w-auto bg-blue-600 text-white px-4 py-2.5 sm:py-2 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition font-medium"
               >
                 {t('applications.details')}
               </Link>
