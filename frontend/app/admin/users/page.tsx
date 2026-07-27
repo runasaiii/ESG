@@ -274,7 +274,7 @@ export default function AdminUsersPage() {
                           >
                             Просмотр
                           </Link>
-                          {!u.is_super_admin && !u.isAdmin && user?.is_super_admin && (
+                          {!u.is_super_admin && !u.isAdmin && u?.is_super_admin && (
                             <button
                               onClick={() => handleMakeAdmin(u.id)}
                               className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-md hover:bg-yellow-200 transition-colors font-medium"
@@ -388,7 +388,7 @@ export default function AdminUsersPage() {
                     >
                       Подробнее
                     </Link>
-                    {!u.is_super_admin && !u.isAdmin && user?.is_super_admin && (
+                    {!u.is_super_admin && !u.isAdmin && u?.is_super_admin && (
                       <button
                         onClick={() => handleMakeAdmin(u.id)}
                         className="btn bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-sm w-full hover:from-yellow-600 hover:to-yellow-700 shadow-md hover:shadow-lg transition-all"
