@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { apiClient, Application } from '@/lib/api';
 import { useStore } from '@/lib/store';
@@ -25,7 +25,7 @@ interface AdminApplication extends Application {
   responses_count?: number;
 }
 
-export default function AdminApplicationsPage() {
+function AdminApplicationsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, setUser } = useStore();
@@ -154,7 +154,7 @@ export default function AdminApplicationsPage() {
     return null;
   }
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string = 'pending') => {
     switch (status) {
       case 'pending':
         return <span className="badge bg-yellow-500 text-white">На модерации</span>;
@@ -474,6 +474,14 @@ export default function AdminApplicationsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AdminApplicationsPage() {
+  return (
+    <Suspense fallback={null}>
+      <AdminApplicationsPageContent />
+    </Suspense>
   );
 }
 

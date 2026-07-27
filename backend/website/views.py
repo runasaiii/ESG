@@ -11,6 +11,7 @@ import mimetypes
 import json
 import html
 import re
+import requests
 
 views = Blueprint('views', __name__)
 
@@ -45,8 +46,10 @@ def sanitize_description(description):
     return description
 
 def get_location_info(latitude, longitude):
+    from .kazakhstan_cities import get_nearest_city
+
+    city, region = None, None
     try:
-        import requests
         url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={latitude}&lon={longitude}&zoom=10&addressdetails=1"
         headers = {'User-Agent': 'ASAR Application/1.0'}
         response = requests.get(url, headers=headers, timeout=5)
@@ -55,16 +58,25 @@ def get_location_info(latitude, longitude):
             address = data.get('address', {})
             city = address.get('city') or address.get('town') or address.get('village') or address.get('municipality')
             region = address.get('state') or address.get('region') or address.get('county')
-            return city, region
     except (requests.RequestException, ValueError, KeyError) as e:
         current_app.logger.warning(f"Error getting location info: {e}")
-        pass
-    return None, None
+
+    # Nominatim мог не ответить (таймаут/сеть), либо вернуть название,
+    # которого нет в нашем справочнике городов (используется фронтендом
+    # для фильтрации). В обоих случаях подменяем на ближайший город из
+    # справочника, чтобы заявка не "терялась" из-за несовпадения city.
+    from .kazakhstan_cities import KAZAKHSTAN_CITIES
+    known_names = {c['name'] for c in KAZAKHSTAN_CITIES}
+    if not city or city not in known_names:
+        nearest_city, nearest_region = get_nearest_city(latitude, longitude)
+        if nearest_city:
+            city, region = nearest_city, nearest_region
+
+    return city, region
 
 def get_full_address(latitude, longitude):
     """Получить полный адрес из координат"""
     try:
-        import requests
         url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={latitude}&lon={longitude}&zoom=18&addressdetails=1"
         headers = {'User-Agent': 'ASAR Application/1.0'}
         response = requests.get(url, headers=headers, timeout=5)

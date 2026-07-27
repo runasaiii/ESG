@@ -254,25 +254,29 @@ export default function ApplicationDetailPage() {
               <div className="flex justify-between">
                 <span className="text-gray-600">Дата создания:</span>
                 <span className="font-medium">
-                  {new Date(application.date).toLocaleDateString('ru-RU', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
+                  {application.date
+                    ? new Date(application.date).toLocaleDateString('ru-RU', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })
+                    : '—'}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Действует до:</span>
                 <span className="font-medium">
-                  {new Date(application.expires_at).toLocaleDateString('ru-RU', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
+                  {application.expires_at
+                    ? new Date(application.expires_at).toLocaleDateString('ru-RU', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })
+                    : '—'}
                 </span>
               </div>
               {(application as any).duration_days && (

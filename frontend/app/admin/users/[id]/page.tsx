@@ -18,18 +18,18 @@ interface UserDetail {
   last_name?: string;
   avatar?: string;
   city?: string;
-  isAdmin: boolean;
-  is_super_admin: boolean;
-  is_blocked: boolean;
+  isAdmin?: boolean;
+  is_super_admin?: boolean;
+  is_blocked?: boolean;
   blocked_until?: string;
   blocked_reason?: string;
-  total_applications: number;
-  resolved_applications: number;
-  false_calls_count: number;
-  help_given: number;
-  help_total: number;
-  average_rating: number;
-  rating_count: number;
+  total_applications?: number;
+  resolved_applications?: number;
+  false_calls_count?: number;
+  help_given?: number;
+  help_total?: number;
+  average_rating?: number;
+  rating_count?: number;
   badge?: string;
   received_ratings?: Array<{
     id: number;
@@ -264,13 +264,13 @@ export default function AdminUserDetailPage() {
                 )}
 
                 <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg p-4 mb-4 text-white">
-                  <div className="text-5xl font-bold mb-2">{userDetail.average_rating.toFixed(1)}</div>
+                  <div className="text-5xl font-bold mb-2">{(userDetail.average_rating ?? 0).toFixed(1)}</div>
                   <div className="flex justify-center gap-1 mb-2">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
                         className={`w-5 h-5 ${
-                          star <= Math.round(userDetail.average_rating)
+                          star <= Math.round(userDetail.average_rating ?? 0)
                             ? 'fill-yellow-300 text-yellow-300'
                             : 'text-gray-300'
                         }`}

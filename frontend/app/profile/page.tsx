@@ -135,8 +135,8 @@ export default function ProfilePage() {
     return null;
   }
 
-  const averageRating = user.rating_count > 0
-    ? (user.rating_sum / user.rating_count).toFixed(2)
+  const averageRating = (user.rating_count ?? 0) > 0
+    ? ((user.rating_sum ?? 0) / (user.rating_count ?? 1)).toFixed(2)
     : '0.00';
 
   return (

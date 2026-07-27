@@ -1,25 +1,11 @@
 'use client';
 
-import { apiClient } from '@/lib/api';
+import { apiClient, NewsItem } from '@/lib/api';
 import { useStore } from '@/lib/store';
 import { AlertCircle, ArrowLeft, Calendar, MapPin, Newspaper, TrendingUp, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-interface NewsItem {
-    id: number;
-    title: string;
-    content: string;
-    news_type: string;
-    created_at: string;
-    updated_at: string;
-    author: {
-        id: number;
-        first_name: string;
-        last_name?: string;
-    };
-}
 
 const iconMap: Record<string, any> = {
     stats: TrendingUp,
@@ -130,7 +116,7 @@ export default function NewsDetailPage() {
                     <div className="flex-1">
                         <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
                             <Calendar className="w-4 h-4" />
-                            <span>{formatDate(newsItem.created_at)}</span>
+                            <span>{newsItem.created_at ? formatDate(newsItem.created_at) : ''}</span>
                             {newsItem.author && (
                                 <>
                                     <span className="text-gray-300">•</span>

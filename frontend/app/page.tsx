@@ -351,7 +351,9 @@ export default function HomePage() {
               <div>
                 <p className="text-gray-600 text-sm font-medium mb-1">{t('stats.totalInRegion')}</p>
                 <p className="text-3xl font-bold text-blue-600">{stats.total}</p>
-                <p className="text-xs text-gray-500 mt-1">{stats.city || selectedCity || 'Алматы'}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {(stats.city || selectedCity) === 'all' ? 'Все города' : (stats.city || selectedCity || 'Алматы')}
+                </p>
               </div>
               <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
                 <MapPin className="w-8 h-8 text-blue-600" />
@@ -500,6 +502,20 @@ export default function HomePage() {
                         onClick={(e) => e.stopPropagation()}
                       />
                     </div>
+                    <button
+                      type="button"
+                      className="w-full text-left px-4 py-2 hover:bg-blue-50 focus:bg-blue-50 focus:outline-none transition-colors border-b border-gray-100 font-medium text-blue-600"
+                      onClick={() => {
+                        setSelectedCity('all');
+                        setCitySearchValue('Все города');
+                        setCitySuggestions([]);
+                        setShowCitySuggestions(false);
+                        loadApplications(false, 'all');
+                        loadStats(false, 'all');
+                      }}
+                    >
+                      🌍 Все города
+                    </button>
                     {citySuggestions.map((city, index) => (
                       <button
                         key={index}
