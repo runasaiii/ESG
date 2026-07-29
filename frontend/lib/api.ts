@@ -1,7 +1,9 @@
 import axios, { AxiosError } from 'axios';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: `${basePath}/api`,
   withCredentials: true,
 });
 

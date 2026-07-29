@@ -257,7 +257,9 @@ export default function NewApplicationPage() {
         formDataToSend.append('verification_document', verificationDocument);
       }
 
-      const response = await fetch('http://localhost:5000/api/applications', {
+      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
+      const response = await fetch(`${basePath}/api/applications`, {
         method: 'POST',
         credentials: 'include',
         body: formDataToSend,

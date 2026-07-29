@@ -1,0 +1,76 @@
+services:
+  asar-db:
+    image: postgres:16-alpine
+    container_name: asar-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - asar-db-data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    networks:
+      - shared-network
+
+  asar-backend:
+    build: ./backend
+    container_name: asar-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    volumes:
+      - asar-uploads:/app/backend/instance/uploads
+    depends_on:
+      - asar-db
+    expose:
+      - "8000"
+    networks:
+      - shared-network
+
+  asar-bot:
+    build: ./backend
+    container_name: asar-bot
+    restart: unless-stopped
+    entrypoint: ["python", "telegram_bot/bot.py"]
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - asar-backend
+    networks:
+      - shared-network
+
+  asar-frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_BASE_PATH: /asar
+        NEXT_PUBLIC_API_URL: http://asar-backend:8000
+
+    container_name: asar-frontend
+    restart: unless-stopped
+
+    env_file:
+      - ./frontend/.env
+
+    environment:
+      NEXT_PUBLIC_API_URL: http://asar-backend:8000
+
+    depends_on:
+      - asar-backend
+    # expose:
+    #   - "3000"
+    networks:
+      - shared-network
+    ports:
+      - "3000:3000"
+
+volumes:
+  asar-db-data:
+  asar-uploads:
+
+networks:
+  # здесь нужно заменить на реальное имя общей внешней сети
+  shared-network:
+    external: true

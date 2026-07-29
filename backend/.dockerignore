@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+instance/uploads/*
+!instance/uploads/.gitkeep
+tests/
+requirements-test.txt
+*.md
