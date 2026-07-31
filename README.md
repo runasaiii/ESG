@@ -4,310 +4,210 @@
 
 ## Требования
 
-- Python 3.13
-- PostgreSQL
-- Node.js 18+
+- Docker Desktop (с Docker Compose v2)
+- Git
 
-## Установка
-
-### 1. Установка зависимостей
-
-```bash
-cd backend
-pip install -r requirements.txt
-```
-
-### Установка Next.js
-
-```bash
-cd frontend
-npm install
-```
-
-#### Настройка
-
-Создайте файл `.env.local`:
-
-```bash
-NEXT_PUBLIC_API_URL=http://localhost:5000
-```
-
-### Запуск
-
-#### Development режим
-
-```bash
-npm run dev
-```
-
-Аппка будет воркать по адресу [http://localhost:3000](http://localhost:3000)
-
-#### Production сборка
-
-```bash
-npm run build
-npm start
-```
- 
-
-### 2. Установка PostgreSQL
-
-#### Windows
-
-1. Скачайть установщик с https://www.postgresql.org/download/windows/
-2. Запустить мануальный установщик
-3. Запомнить (обязательно) пароль для пользователя `postgres` (будет использован в .env)
-
-#### Linux (Ubuntu/Debian)
-
-```bash
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-```
-
-#### macOS
-
-```bash
-brew install postgresql
-brew services start postgresql
-```
-
-### 3. Создание базы данных
-
-Подключись к PostgreSQL:
-
-```bash
-psql -U postgres
-```
-
-Создай базу данных:
-
-```sql
-CREATE DATABASE asar_db;
-\q
-```
-
-Или через командную строку:
-
-```bash
-psql -U postgres -c "CREATE DATABASE asar_db;"
-```
-
-### 4. Настройка переменных окружения
-
-Создать файл `.env` в корне проекта (скопируй из `.env.example`):
-
-```bash
-cp .env.example .env
-# Отредактируй .env файл и заполни свои данные
-```
-
-Пример содержимого `.env`:
-
-```env
-SECRET_KEY=your-secret-key-here
-DB_USER=postgres
-DB_PASSWORD=your_postgres_password
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=asar_db
-TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-WEB_APP_URL=http://localhost:5000
-FLASK_DEBUG=False
-```
-
-### 5. Синхронизация базы данных
-
-#### Первая настройка (новый разработчик):
-
-1. Убедитесь, что база данных `asar_db` создана (см. шаг 3)
-
-2. Примените миграции базы данных:
-   ```bash
-   cd backend
-   flask --app main:app db upgrade
-   ```
-
-3. (Опционально) Загрузите тестовые данные:
-   ```bash
-   psql -U postgres -d asar_db -f seed_data.sql
-   ```
-
-#### После получения изменений из Git:
-
-Если были добавлены новые миграции базы данных:
-```bash
-cd backend
-flask --app main:app db upgrade
-```
-
-#### Создание новой миграции:
-
-После изменения моделей в `backend/website/models.py`:
-```bash
-cd backend
-flask --app main:app db migrate -m "Описание изменений"
-flask --app main:app db upgrade
-git add backend/migrations/
-git commit -m "Add migration: Описание изменений"
-```
-
-### 6. Создание первого супер-администратора
-
-```bash
-cd backend
-python create_super_admin.py
-```
-
-### 7. Запуск приложения
-
-```bash
-cd backend
-python main.py
-```
-
-Если все ок:
-
-```
-Connecting to PostgreSQL database: asar_db@localhost:5432
-Database tables created/verified
-```
-
-## Запуск Telegram бота
-
-В отдельном терминале прописать:
-
-```bash
-cd backend
-python telegram_bot/bot.py
-```
-
-### Настройка Telegram бота
-
-1. Создай бота через [@BotFather](https://t.me/BotFather)
-2. Получи токен бота
-3. Добавь токен в `.env` файл:
-   ```
-   TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-   ```
-
-### Функционал бота
-
-- `/start` - Авторизация и начало работы
-- `/create` - Создание заявки
-- `/sos` - Экстренная ситуация
-- `/resources` - Просмотр точек ресурсов
-- `/help` - Справка
-
-## Настройка DataGrip / DBeaver
-
-### Подключение к базе данных
-
-1. Создайте новое подключение PostgreSQL в DataGrip/DBeaver:
-   - **Host**: `localhost` (или значение из `.env`)
-   - **Port**: `5432` (или значение из `.env`)
-   - **Database**: `asar_db` (или значение из `.env`)
-   - **User**: `postgres` (или значение из `.env`)
-   - **Password**: пароль из вашего `.env` файла
-
-2. После подключения обновите схему базы данных:
-   - В DataGrip: правый клик на базе данных → **Refresh** (или F5)
-   - В DBeaver: правый клик на базе данных → **Refresh**
-
-3. Если таблицы не видны:
-   - Убедитесь, что PostgreSQL запущен
-   - Проверьте, что база данных `asar_db` существует
-   - Убедитесь, что миграции применены: `flask --app main:app db upgrade`
-
-### Проверка подключения через psql
-
-```bash
-psql -U postgres -d asar_db
-\dt  # список таблиц
-\q   # выход
-```
-
-## Отладка карты
-
-### API ключ не требуется 
-
-Leaflet с OpenStreetMap работает бесплатно без апишки
-
-### Проверка загрузки карты
-
-1. Открой браузер и перейди на главную страницу
-2. Открой консоль разработчика (F12)
-3. Проверь сообщения в консоли:
-   - Должно быть: "Page loaded, checking for Leaflet and map container..."
-   - Должно быть: "All dependencies ready, initializing map..."
-   - Должно быть: "Map initialized successfully"
+Устанавливать Python, Node.js или PostgreSQL локально **не нужно** — всё поднимается через Docker.
 
 ## Структура проекта
 
 ```
-backend/
-  ├── website/              # Основное веб-приложение Flask
-  │   ├── templates/        # HTML шаблоны
-  │   ├── static/           # Статические файлы (CSS, JS, изображения)
-  │   ├── models.py         # Модели базы данных
-  │   ├── views.py          # Маршруты и логика
-  │   └── auth.py           # Аутентификация
-  ├── telegram_bot/         # Telegram бот (отдельный сервис)
-  │   ├── handlers/         # Обработчики команд
-  │   ├── middleware/       # Middleware
-  │   ├── utils/            # Утилиты
-  │   └── bot.py            # Точка входа бота
-  ├── instance/             # Загруженные файлы
-  ├── main.py              # Точка входа Flask приложения
-  └── requirements.txt     # Зависимости Python
+ESG/
+├── backend/
+│   ├── Dockerfile
+│   ├── entrypoint.sh
+│   ├── .dockerignore
+│   ├── .env              ← создаётся из .env.example, см. ниже
+│   └── ...
+├── frontend/
+│   ├── Dockerfile
+│   ├── .dockerignore
+│   ├── .env              ← создаётся из .env.example, см. ниже
+│   ├── next.config.js
+│   └── ...
+├── docker-compose.yml
+└── .env                  ← создаётся из .env.example, читает docker-compose
+```
 
-frontend/
-  ├── app/                      # Маршруты Next.js (App Router)
-  │   ├── layout.tsx           # Общий layout
-  │   ├── page.tsx             # Главная
-  │   ├── applications/        # Раздел заявок
-  │   │   └── [id]/            # Динамический маршрут
-  │   │       └── page.tsx
-  │   └── profile/             # Профиль пользователя
-  │       ├── layout.tsx
-  │       └── page.tsx
-  ├── components/              # Повторно используемые компоненты
-  │   ├── common/              # Общие UI-элементы
-  │   │   ├── CategoryBadge.tsx
-  │   │   └── SearchBar.tsx
-  │   ├── home/                # Компоненты домашней страницы
-  │   │   ├── ApplicationMarker.tsx
-  │   │   ├── ListView.tsx
-  │   │   ├── MapView.tsx
-  │   │   ├── MapView.client.tsx
-  │   │   └── ViewToggle.tsx
-  │   └── layout/              # Навигация, шапка, подвал
-  │       ├── Header.tsx
-  │       ├── Footer.tsx
-  │       └── NotificationsDropdown.tsx
-  ├── hooks/                   # Кастомные React-хуки
-  │   ├── useUser.ts
-  │   └── useFetch.ts
-  ├── lib/                     # Вспомогательная логика
-  │   ├── api.ts               # API клиент
-  │   ├── constants.ts
-  │   └── helpers.ts
-  ├── styles/                  # Глобальные и модульные стили
-  │   ├── globals.css
-  │   └── variables.css
-  ├── public/                  # Статические ресурсы
-  │   ├── images/
-  │   └── icons/
-  ├── types/                   # TS типы
-  │   ├── application.d.ts
-  │   └── user.d.ts
-  ├── next.config.js
-  ├── tsconfig.json
-  ├── package.json
-  └── .gitignore
+## Быстрый старт
 
+### 1. Проверить Docker
+
+```bash
+docker --version
+docker compose version
+```
+
+Если команды не найдены — поставить [Docker Desktop](https://www.docker.com/products/docker-desktop/) и перезапустить терминал.
+
+### 2. Настроить переменные окружения
+
+В проекте **три отдельных `.env` файла** — не один общий:
+
+| Файл | Кто читает | Назначение |
+|---|---|---|
+| `ESG/.env` | сам `docker-compose.yml` | credentials для контейнера БД |
+| `ESG/backend/.env` | контейнер `asar-backend` | Flask-конфиг, подключение к БД, токены |
+| `ESG/frontend/.env` | контейнер `asar-frontend` (на этапе сборки) | публичные переменные для Next.js |
+
+Создайте их из шаблона:
+
+**Windows (PowerShell), из корня `ESG/`:**
+```powershell
+Copy-Item .env.example .env
+Copy-Item .env.example backend\.env
+New-Item frontend\.env
+```
+
+**Linux/Mac:**
+```bash
+cp .env.example .env
+cp .env.example backend/.env
+touch frontend/.env
+```
+
+Затем заполните каждый файл:
+
+**`ESG/.env`** (корень):
+```env
+DB_USER=asar_user
+DB_PASSWORD=придумайте_пароль
+DB_NAME=asar_db
+```
+
+**`ESG/backend/.env`**:
+```env
+SECRET_KEY=придумайте_случайную_строку
+DB_USER=asar_user
+DB_PASSWORD=тот_же_пароль_что_в_корневом_.env
+DB_HOST=asar-db
+DB_PORT=5432
+DB_NAME=asar_db
+TELEGRAM_BOT_TOKEN=токен_от_BotFather
+WEB_APP_URL=http://localhost:3000
+FLASK_DEBUG=False
+```
+⚠️ `DB_USER`, `DB_PASSWORD`, `DB_NAME` должны **совпадать** во всех трёх файлах — иначе Postgres не создаст роль, под которой backend пытается подключиться.
+
+⚠️ `DB_HOST=asar-db` — это имя сервиса из `docker-compose.yml`, а не `localhost`: контейнеры внутри compose общаются по именам сервисов.
+
+**`ESG/frontend/.env`**:
+```env
+NEXT_PUBLIC_API_URL=http://asar-backend:8000
+```
+
+### 3. Создать общую docker-сеть
+
+```bash
+docker network create shared-network
+```
+(если уже существует — команда просто вернёт ошибку, это нормально, можно игнорировать)
+
+### 4. Собрать и поднять контейнеры
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+Первая сборка фронтенда — самая долгая (npm install + build), 3–5 минут.
+
+### 5. Проверить, что всё живое
+
+```bash
+docker compose ps
+```
+Ожидаем 4 контейнера (`asar-db`, `asar-backend`, `asar-bot`, `asar-frontend`) в статусе `Up`.
+
+Если что-то не поднялось:
+```bash
+docker compose logs -f asar-backend
+docker compose logs -f asar-frontend
+```
+
+### 6. Проверить миграции БД
+
+При старте `asar-backend` `entrypoint.sh` автоматически прогоняет `flask db upgrade`. Проверить вручную:
+```bash
+docker compose exec asar-backend flask db upgrade
+docker compose exec asar-db psql -U asar_user -d asar_db -c "\dt"
+```
+
+### 7. Открыть в браузере
+
+Приложение работает под basePath **`/asar`**:
+
+**http://localhost:3000/asar**
+
+## basePath: как это устроено
+
+Next.js собран с `basePath = '/asar'` (управляется переменной `NEXT_BASE_PATH`, задаётся как build-arg в `docker-compose.yml` для сервиса `asar-frontend`). Это значение должно быть доступно **и на этапе сборки, и в рантайм-стадии Dockerfile** (multi-stage сборки не наследуют `ENV` между стадиями — прописывайте `ARG`/`ENV` в каждой стадии, где переменная нужна).
+
+Клиентский код (`lib/api.ts`) формирует URL для API-запросов с учётом basePath через `NEXT_PUBLIC_BASE_PATH` — не хардкодьте `/api/...` без префикса, иначе запросы 404-ят при проксировании через `rewrites()`.
+
+## Частые проблемы
+
+### ChunkLoadError / 404 на `_next/static/chunks/*.js`
+Обычно значит, что в контейнер не попал `next.config.js` (проверьте, что он копируется в `runner`-стадию Dockerfile), либо basePath не был передан на этапе сборки. См. раздел про basePath выше.
+
+### `role "asar_user" does not exist`
+Postgres создаёт пользователя/базу **только при первой инициализации volume**. Если раньше поднимали БД с другими credentials — volume уже проинициализирован под старые. Решение (для локальной разработки, где не жалко данных):
+```bash
+docker compose down -v
+docker compose up -d
+```
+
+### `relation "X" already exists` при миграциях
+Рассинхрон между `alembic_version` и реальным состоянием схемы — обычно решается тем же пересозданием volume, что и выше.
+
+### 500 на API-запросах после успешного логина/старта
+Смотрите живые логи backend в момент запроса:
+```bash
+docker compose logs --tail=100 -f asar-backend
+```
+
+## Локальная разработка без Docker (опционально)
+
+Если нужно быстро дебажить фронт или бэк по отдельности без пересборки контейнеров:
+
+**Backend:**
+```bash
+cd backend
+pip install -r requirements.txt
+# .env должен указывать DB_HOST=localhost и порт вашей локальной/проброшенной БД
+python main.py
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Учтите: при локальном `npm run dev` basePath из Docker-сборки не действует, приложение будет на `http://localhost:3000` без `/asar`.
+
+## Telegram-бот
+
+Бот поднимается как отдельный сервис `asar-bot` в том же `docker-compose.yml`. Токен берётся из `backend/.env` (`TELEGRAM_BOT_TOKEN`). Логи:
+```bash
+docker compose logs -f asar-bot
+```
+
+### Функционал бота
+- `/start` — авторизация и начало работы
+- `/create` — создание заявки
+- `/sos` — экстренная ситуация
+- `/resources` — просмотр точек ресурсов
+- `/help` — справка
+
+## Погасить всё
+
+```bash
+docker compose down
+```
+Добавьте `-v`, если нужно также удалить данные БД (volume):
+```bash
+docker compose down -v
 ```
 
 ## Функционал
@@ -325,5 +225,3 @@ frontend/
 - Статистика и аналитика
 - Управление пользователями
 - Создание новых администраторов (только супер-админ)
-
-
