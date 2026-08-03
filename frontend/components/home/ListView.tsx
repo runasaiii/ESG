@@ -12,7 +12,7 @@ interface ListViewProps {
 }
 
 export default function ListView({ applications }: ListViewProps) {
-  const { language } = useStore();
+  const { language, setViewMode, setSelectedApplicationId } = useStore();
   const t = useTranslation(language);
 
   if (applications.length === 0) {
@@ -91,13 +91,24 @@ export default function ListView({ applications }: ListViewProps) {
               </div>
             )}
           </div>
-
-          <Link
-            href={`/applications/${app.id}`}
-            className="block w-full text-center btn btn-primary"
-          >
-            {t('common.more')}
-          </Link>
+<div className="flex gap-2">
+            <button
+              onClick={() => {
+                setSelectedApplicationId(app.id);
+                setViewMode('map');
+              }}
+              className="flex-1 text-center btn btn-secondary"
+            >
+              <MapPin className="inline w-4 h-4 mr-1" />
+              На карте
+            </button>
+            <Link
+              href={`/applications/${app.id}`}
+              className="flex-1 text-center btn btn-primary"
+            >
+              {t('common.more')}
+            </Link>
+          </div>
         </div>
       ))}
     </div>

@@ -25,10 +25,12 @@ interface StoreState {
   language: 'ru' | 'kk' | 'en';
   viewMode: 'map' | 'list';
   shouldRefreshApplications: boolean;
+  selectedApplicationId: number | null;
   setUser: (user: User | null) => void;
   setLanguage: (language: 'ru' | 'kk' | 'en') => void;
   setViewMode: (mode: 'map' | 'list') => void;
   setShouldRefreshApplications: (value: boolean) => void;
+  setSelectedApplicationId: (id: number | null) => void;
 }
 
 export const useStore = create<StoreState>((set) => ({
@@ -36,8 +38,10 @@ export const useStore = create<StoreState>((set) => ({
   language: 'ru',
   viewMode: 'map',
   shouldRefreshApplications: false,
+  selectedApplicationId: null,
   setUser: (user) => set({ user }),
   setLanguage: (language) => set({ language }),
   setViewMode: (mode) => set({ viewMode: mode }),
   setShouldRefreshApplications: (value) => set({ shouldRefreshApplications: value }),
+  setSelectedApplicationId: (id) => set({ selectedApplicationId: id }),
 }));

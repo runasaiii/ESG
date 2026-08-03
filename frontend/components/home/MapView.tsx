@@ -34,9 +34,24 @@ const MapInitializer = dynamic(
 interface MapViewProps {
   applications: Application[];
   center?: [number, number];
+  userLocation?: [number, number] | null;
 }
 
 type CategoryFilter = 'food' | 'medicine' | 'shelter' | 'emergency' | 'all';
+type RadiusFilter = 5 | 10 | 25 | 50 | 'all';
+
+// Расстояние между двумя точками в километрах (формула Haversine)
+function getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2;
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
 
 // Компонент для обновления центра карты
 function MapCenterController({ center }: { center?: [number, number] }) {
@@ -51,12 +66,34 @@ function MapCenterController({ center }: { center?: [number, number] }) {
   return null;
 }
 
-export default function MapView({ applications, center }: MapViewProps) {
-  const { language } = useStore();
+// Центрирует карту на заявке, выбранной из списка
+function MapFocusController({
+  applications,
+  selectedId,
+}: {
+  applications: Application[];
+  selectedId: number | null;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!selectedId) return;
+    const target = applications.find((app) => app.id === selectedId);
+    if (target) {
+      map.setView([target.latitude, target.longitude], 15, { animate: true });
+    }
+  }, [selectedId, applications, map]);
+
+  return null;
+}
+
+export default function MapView({ applications, center, userLocation }: MapViewProps) {
+  const { language, selectedApplicationId } = useStore();
   const t = useTranslation(language);
 
   const [isClient, setIsClient] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
+  const [selectedRadius, setSelectedRadius] = useState<RadiusFilter>('all');
   const [mapKey, setMapKey] = useState(0);
   
 
@@ -69,9 +106,13 @@ export default function MapView({ applications, center }: MapViewProps) {
   // React Leaflet автоматически обновит маркеры при изменении пропса applications
   // Не нужно обновлять mapKey, так как это вызывает полную перерисовку карты и ошибки
 
-  const filteredApplications = selectedCategory === 'all' 
-    ? applications 
-    : applications.filter(app => app.category === selectedCategory);
+  const filteredApplications = applications
+    .filter((app) => selectedCategory === 'all' || app.category === selectedCategory)
+    .filter((app) => {
+      if (selectedRadius === 'all' || !userLocation) return true;
+      const distance = getDistanceKm(userLocation[0], userLocation[1], app.latitude, app.longitude);
+      return distance <= selectedRadius;
+    });
 
   const handleCategoryClick = (category: CategoryFilter) => {
     setSelectedCategory(selectedCategory === category ? 'all' : category);
@@ -134,6 +175,26 @@ const categories: {
         className="bg-white rounded-lg shadow-md w-full relative overflow-hidden"
         style={{ height: '600px', position: 'relative', isolation: 'isolate' }}
       >
+      {userLocation && (
+        <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="text-sm text-gray-600 font-semibold">Радиус:</span>
+            {([5, 10, 25, 50, 'all'] as RadiusFilter[]).map((r) => (
+              <button
+                key={r}
+                onClick={() => setSelectedRadius(r)}
+                className={`rounded-full border px-3 py-1 text-xs font-semibold transition-all duration-200 ${
+                  selectedRadius === r
+                    ? 'border-blue-500 bg-blue-100 text-blue-700 ring-2 ring-blue-500 ring-offset-1'
+                    : 'border-gray-300 bg-gray-100 text-gray-700 hover:scale-105'
+                }`}
+              >
+                {r === 'all' ? 'Все' : `${r} км`}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
         <div 
           className="w-full h-full relative overflow-hidden"
           style={{ 
@@ -154,6 +215,7 @@ const categories: {
               <MapResizeHandler />
               <MapInitializer />
               <MapCenterController center={center} />
+              <MapFocusController applications={filteredApplications} selectedId={selectedApplicationId} />
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

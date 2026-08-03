@@ -23,6 +23,7 @@ export default function HomePage() {
   const [citySuggestions, setCitySuggestions] = useState<CityData[]>([]);
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const [mapCenter, setMapCenter] = useState<[number, number]>([43.2220, 76.8512]);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const pathname = usePathname();
   const prevPathnameRef = useRef<string | null>(null);
   const t = useTranslation(language);
@@ -61,6 +62,8 @@ export default function HomePage() {
             async (position) => {
               const userLat = position.coords.latitude;
               const userLng = position.coords.longitude;
+
+              setUserLocation([userLat, userLng]);
 
               let closestCity: CityData | null = null;
               let minDistance = Infinity;
@@ -548,7 +551,7 @@ export default function HomePage() {
           ) : viewMode === 'list' ? (
             <ListView applications={applications} />
           ) : (
-            <MapView applications={applications} center={mapCenter} />
+            <MapView applications={applications} center={mapCenter} userLocation={userLocation} />
           )}
         </div>
 

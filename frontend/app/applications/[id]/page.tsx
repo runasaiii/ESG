@@ -22,6 +22,12 @@ const Marker = dynamic(
   () => import('react-leaflet').then((mod) => mod.Marker),
   { ssr: false }
 );
+
+
+const Popup = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Popup),
+  { ssr: false }
+);
 const LeafletIconFix = dynamic(
   () => import('@/components/common/LeafletIconFix'),
   { ssr: false }
@@ -38,6 +44,7 @@ export default function ApplicationDetailPage() {
   const [isClient, setIsClient] = useState(false);
   const [userResponse, setUserResponse] = useState<ApplicationResponse | null>(null);
   const [acceptedVolunteers, setAcceptedVolunteers] = useState<any[]>([]);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -194,6 +201,12 @@ export default function ApplicationDetailPage() {
                   <Marker 
                     position={[application.latitude, application.longitude]}
                   />
+                  {userLocation && (
+                    <Marker position={userLocation}>
+                      <Popup>Вы здесь</Popup>
+                    </Marker>
+                  )}
+                  
                 </MapContainer>
               </div>
             )}
