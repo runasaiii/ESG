@@ -79,13 +79,13 @@ export default function Header() {
           <Link href="/" className="flex items-center flex-shrink-0 group" onClick={closeMobileMenu}>
             <div className="group-hover:opacity-90 transition-opacity">
               <img
-                src="/ASARlogoo3.png"
-                alt="ASAR Logo"
-                className="h-14 sm:h-18 lg:h-24 w-auto"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/placeholder-logo.svg';
-                }}
-              />
+            src="/asar/ASARlogoo3.png"
+            alt="ASAR Logo"
+            className="h-14 sm:h-18 lg:h-24 w-auto object-contain"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "/placeholder-logo.svg";
+            }}
+          />
             </div>
           </Link>
 
