@@ -2672,6 +2672,8 @@ def create_sos():
     if not (-90 <= latitude <= 90) or not (-180 <= longitude <= 180):
         return jsonify({'error': 'Некорректные координаты'}), 400
     
+    city, region = get_location_info(latitude, longitude)
+    
     new_application = Application(
         description="SOS - Экстренная ситуация",
         latitude=latitude,
@@ -2680,6 +2682,9 @@ def create_sos():
         user_id=sos_user.id,
         moderation_status=ModerationStatus.PENDING,
         is_sos=True,
+        city=city,
+        region=region,
+        priority=5,
         expires_at=datetime.now(timezone.utc) + timedelta(days=1)
     )
     
