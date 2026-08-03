@@ -2632,30 +2632,31 @@ def api_create_application():
 @login_required
 def create_sos():
     from .models import User
+    sos_user = current_user
     if current_user.is_authenticated:
         try:
             db.session.refresh(current_user)
         except Exception:
             user_id = current_user.id
-            current_user = User.query.get(user_id)
-            if not current_user:
+            sos_user = User.query.get(user_id)
+            if not sos_user:
                 return jsonify({'error': 'Пользователь не найден'}), 401
     
-    if current_user.is_blocked:
-        if current_user.blocked_until and current_user.blocked_until > datetime.now(timezone.utc):
+    if sos_user.is_blocked:
+        if sos_user.blocked_until and sos_user.blocked_until > datetime.now(timezone.utc):
             blocked_info = {
                 'error': 'Вы заблокированы и не можете создавать заявки',
                 'blocked': True,
-                'blocked_until': current_user.blocked_until.isoformat(),
-                'blocked_reason': current_user.blocked_reason
+                'blocked_until': sos_user.blocked_until.isoformat(),
+                'blocked_reason': sos_user.blocked_reason
             }
             return jsonify(blocked_info), 403
         else:
-            current_user.is_blocked = False
-            current_user.blocked_until = None
+            sos_user.is_blocked = False
+            sos_user.blocked_until = None
             db.session.commit()
     
-    if current_user.rating_count > 0 and current_user.average_rating < 2.0:
+    if sos_user.rating_count > 0 and sos_user.average_rating < 2.0:
         return jsonify({'error': 'Ваш рейтинг слишком низкий для создания заявок'}), 403
     
     data = request.get_json()
@@ -2676,7 +2677,7 @@ def create_sos():
         latitude=latitude,
         longitude=longitude,
         category=ApplicationCategory.EMERGENCY,
-        user_id=current_user.id,
+        user_id=sos_user.id,
         moderation_status=ModerationStatus.PENDING,
         is_sos=True,
         expires_at=datetime.now(timezone.utc) + timedelta(days=1)
