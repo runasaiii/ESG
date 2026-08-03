@@ -2,6 +2,7 @@
 
 import { apiClient } from '@/lib/api';
 import { useStore } from '@/lib/store';
+import { useTranslation, getLanguage } from '@/lib/i18n';
 import { Edit, Eye, EyeOff, Newspaper, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -23,6 +24,7 @@ interface NewsItem {
 export default function AdminNewsPage() {
     const router = useRouter();
     const { user } = useStore();
+    const t = useTranslation(getLanguage());
     const [loading, setLoading] = useState(true);
     const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
     const [showForm, setShowForm] = useState(false);
@@ -68,7 +70,7 @@ export default function AdminNewsPage() {
             loadNews();
         } catch (error) {
             console.error('Error saving news:', error);
-            alert('Ошибка при сохранении новости');
+            alert(t('adminNews.saveError'));
         }
     };
 
@@ -84,7 +86,7 @@ export default function AdminNewsPage() {
     };
 
     const handleDelete = async (id: number) => {
-        if (!confirm('Вы уверены, что хотите удалить эту новость?')) {
+        if (!confirm(t('adminNews.confirmDelete'))) {
             return;
         }
         try {
@@ -92,7 +94,7 @@ export default function AdminNewsPage() {
             loadNews();
         } catch (error) {
             console.error('Error deleting news:', error);
-            alert('Ошибка при удалении новости');
+            alert(t('adminNews.deleteError'));
         }
     };
 
@@ -102,7 +104,7 @@ export default function AdminNewsPage() {
             loadNews();
         } catch (error) {
             console.error('Error updating news:', error);
-            alert('Ошибка при обновлении новости');
+            alert(t('adminNews.updateError'));
         }
     };
 
@@ -137,9 +139,9 @@ export default function AdminNewsPage() {
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center">
                         <Newspaper className="w-8 h-8 mr-3 text-blue-600" />
-                        Управление новостями
+                        {t('adminNews.title')}
                     </h1>
-                    <p className="text-gray-600">Создавайте и редактируйте новости платформы</p>
+                    <p className="text-gray-600">{t('adminNews.subtitle')}</p>
                 </div>
                 <button
                     onClick={() => {
@@ -150,19 +152,19 @@ export default function AdminNewsPage() {
                     className="btn btn-primary flex items-center space-x-2"
                 >
                     <Plus className="w-5 h-5" />
-                    <span>Создать новость</span>
+                    <span>{t('adminNews.create')}</span>
                 </button>
             </div>
 
             {showForm && (
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
                     <h2 className="text-xl font-semibold mb-4">
-                        {editingNews ? 'Редактировать новость' : 'Создать новость'}
+                        {editingNews ? t('adminNews.editTitle') : t('adminNews.create')}
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Заголовок *
+                                {t('adminNews.fieldTitle')}
                             </label>
                             <input
                                 type="text"
@@ -175,7 +177,7 @@ export default function AdminNewsPage() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Содержание *
+                                {t('adminNews.fieldContent')}
                             </label>
                             <textarea
                                 value={formData.content}
@@ -187,18 +189,18 @@ export default function AdminNewsPage() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Тип новости
+                                {t('adminNews.fieldType')}
                             </label>
                             <select
                                 value={formData.news_type}
                                 onChange={(e) => setFormData({ ...formData, news_type: e.target.value })}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             >
-                                <option value="general">Общее</option>
-                                <option value="stats">Статистика</option>
-                                <option value="location">Местоположение</option>
-                                <option value="safety">Безопасность</option>
-                                <option value="volunteers">Волонтеры</option>
+                                <option value="general">{t('adminNews.types.general')}</option>
+                                <option value="stats">{t('adminNews.types.stats')}</option>
+                                <option value="location">{t('adminNews.types.location')}</option>
+                                <option value="safety">{t('adminNews.types.safety')}</option>
+                                <option value="volunteers">{t('adminNews.types.volunteers')}</option>
                             </select>
                         </div>
                         <div className="flex items-center">
@@ -210,12 +212,12 @@ export default function AdminNewsPage() {
                                 className="mr-2"
                             />
                             <label htmlFor="is_published" className="text-sm text-gray-700">
-                                Опубликовать сразу
+                                {t('adminNews.publishNow')}
                             </label>
                         </div>
                         <div className="flex space-x-3">
                             <button type="submit" className="btn btn-primary">
-                                {editingNews ? 'Сохранить' : 'Создать'}
+                                {editingNews ? t('adminNews.save') : t('adminNews.createBtn')}
                             </button>
                             <button
                                 type="button"
@@ -226,7 +228,7 @@ export default function AdminNewsPage() {
                                 }}
                                 className="btn btn-secondary"
                             >
-                                Отмена
+                                {t('adminNews.cancel')}
                             </button>
                         </div>
                     </form>
@@ -239,22 +241,22 @@ export default function AdminNewsPage() {
                         <thead className="bg-gray-50">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Заголовок
+                                    {t('adminNews.fieldTitle')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Тип
+                                    {t('adminNews.fieldType')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Автор
+                                    {t('adminNews.author')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Дата
+                                    {t('admin.applicationsPage.date')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Статус
+                                    {t('admin.applicationsPage.status')}
                                 </th>
                                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Действия
+                                    {t('admin.applicationsPage.actions')}
                                 </th>
                             </tr>
                         </thead>
@@ -282,11 +284,11 @@ export default function AdminNewsPage() {
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {item.is_published ? (
                                                 <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                                    Опубликовано
+                                                    {t('adminNews.published')}
                                                 </span>
                                             ) : (
                                                 <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                                                    Черновик
+                                                    {t('adminNews.draft')}
                                                 </span>
                                             )}
                                         </td>
@@ -295,7 +297,7 @@ export default function AdminNewsPage() {
                                                 <button
                                                     onClick={() => handleTogglePublish(item)}
                                                     className="text-blue-600 hover:text-blue-900"
-                                                    title={item.is_published ? 'Снять с публикации' : 'Опубликовать'}
+                                                    title={item.is_published ? t('adminNews.unpublish') : t('adminNews.publish')}
                                                 >
                                                     {item.is_published ? (
                                                         <EyeOff className="w-5 h-5" />
@@ -306,14 +308,14 @@ export default function AdminNewsPage() {
                                                 <button
                                                     onClick={() => handleEdit(item)}
                                                     className="text-indigo-600 hover:text-indigo-900"
-                                                    title="Редактировать"
+                                                    title={t('adminNews.editTitle')}
                                                 >
                                                     <Edit className="w-5 h-5" />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(item.id)}
                                                     className="text-red-600 hover:text-red-900"
-                                                    title="Удалить"
+                                                    title={t('adminNews.delete')}
                                                 >
                                                     <Trash2 className="w-5 h-5" />
                                                 </button>
@@ -324,7 +326,7 @@ export default function AdminNewsPage() {
                             ) : (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                                        Новостей пока нет. Создайте первую новость!
+                                        {t('adminNews.empty')}
                                     </td>
                                 </tr>
                             )}
@@ -335,4 +337,3 @@ export default function AdminNewsPage() {
         </div>
     );
 }
-

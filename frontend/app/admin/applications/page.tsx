@@ -91,7 +91,7 @@ function AdminApplicationsPageContent() {
   };
 
   const handleApprove = async (appId: number) => {
-    if (!confirm('Вы уверены, что хотите одобрить эту заявку?')) return;
+    if (!confirm(t('admin.applicationsPage.confirmApprove'))) return;
 
     try {
       await apiClient.approveApplication(appId);
@@ -103,7 +103,7 @@ function AdminApplicationsPageContent() {
   };
 
   const handleReject = async (appId: number) => {
-    if (!confirm('Вы уверены, что хотите отклонить эту заявку?')) return;
+    if (!confirm(t('admin.applicationsPage.confirmReject'))) return;
 
     try {
       await apiClient.rejectApplication(appId);
@@ -115,7 +115,7 @@ function AdminApplicationsPageContent() {
   };
 
   const handleMarkFalse = async (appId: number) => {
-    if (!confirm('Вы уверены, что хотите пометить эту заявку как ложную?')) return;
+    if (!confirm(t('admin.applicationsPage.confirmFalseCall'))) return;
 
     try {
       await apiClient.markFalseApplication(appId);
@@ -157,11 +157,11 @@ function AdminApplicationsPageContent() {
   const getStatusBadge = (status: string = 'pending') => {
     switch (status) {
       case 'pending':
-        return <span className="badge bg-yellow-500 text-white">На модерации</span>;
+        return <span className="badge bg-yellow-500 text-white">{t('admin.applicationsPage.pendingStatus')}</span>;
       case 'approved':
-        return <span className="badge bg-green-500 text-white">Одобрено</span>;
+        return <span className="badge bg-green-500 text-white">{t('admin.applicationsPage.approvedStatus')}</span>;
       case 'rejected':
-        return <span className="badge bg-red-500 text-white">Отклонено</span>;
+        return <span className="badge bg-red-500 text-white">{t('admin.applicationsPage.rejectedStatus')}</span>;
       default:
         return <span className="badge bg-gray-500 text-white">{status}</span>;
     }
@@ -176,10 +176,10 @@ function AdminApplicationsPageContent() {
     };
     return (
       <span className={`badge ${colors[category] || 'bg-gray-100 text-gray-800'}`}>
-        {category === 'food' ? 'Продукты' : 
-         category === 'medicine' ? 'Медицина' :
-         category === 'shelter' ? 'Убежище' :
-         category === 'emergency' ? 'Экстренная помощь' : category}
+        {category === 'food' ? t('admin.applicationsPage.food') : 
+         category === 'medicine' ? t('admin.applicationsPage.medicine') :
+         category === 'shelter' ? t('admin.applicationsPage.shelter') :
+         category === 'emergency' ? t('admin.applicationsPage.emergency') : category}
       </span>
     );
   };
@@ -190,18 +190,18 @@ function AdminApplicationsPageContent() {
         <div className="mb-6">
           <Link href="/admin" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4 font-medium transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Назад к панели администратора
+            {t('admin.applicationsPage.back')}
           </Link>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
             <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
               <FileText className="w-8 h-8 text-white" />
             </div>
-            Управление заявками
+            {t('admin.applicationsPage.title')}
           </h1>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Фильтр по статусу</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('admin.applicationsPage.filterByStatus')}</h3>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => handleStatusChange('all')}
@@ -211,7 +211,7 @@ function AdminApplicationsPageContent() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Все
+              {t('admin.applicationsPage.all')}
             </button>
             <button
               onClick={() => handleStatusChange('pending')}
@@ -221,7 +221,7 @@ function AdminApplicationsPageContent() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              На модерации
+              {t('admin.applicationsPage.pending')}
             </button>
             <button
               onClick={() => handleStatusChange('approved')}
@@ -231,7 +231,7 @@ function AdminApplicationsPageContent() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Одобрено
+              {t('admin.applicationsPage.approved')}
             </button>
             <button
               onClick={() => handleStatusChange('rejected')}
@@ -241,7 +241,7 @@ function AdminApplicationsPageContent() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Отклонено
+              {t('admin.applicationsPage.rejected')}
             </button>
           </div>
         </div>
@@ -262,14 +262,14 @@ function AdminApplicationsPageContent() {
                 <table className="w-full">
                   <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Описание</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Категория</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Пользователь</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Статус</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Приоритет</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.applicationsPage.id')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.applicationsPage.description')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.applicationsPage.category')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.applicationsPage.creator')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.applicationsPage.date')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.applicationsPage.status')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.applicationsPage.priorityLabel')}</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('admin.applicationsPage.actions')}</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -282,7 +282,7 @@ function AdminApplicationsPageContent() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           {getCategoryBadge(app.category)}
                           {app.is_sos && (
-                            <span className="badge bg-red-500 text-white ml-1 text-xs">SOS</span>
+                            <span className="badge bg-red-500 text-white ml-1 text-xs">{t('admin.applicationsPage.sos')}</span>
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
@@ -320,7 +320,7 @@ function AdminApplicationsPageContent() {
                             href={`/applications/${app.id}`}
                             className="px-3 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors font-medium"
                           >
-                            Просмотр
+                            {t('admin.applicationsPage.view')}
                           </Link>
                           {app.moderation_status === 'pending' && (
                             <>
@@ -328,13 +328,13 @@ function AdminApplicationsPageContent() {
                                 onClick={() => handleApprove(app.id)}
                                 className="px-3 py-1 bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition-colors font-medium"
                               >
-                                Одобрить
+                                {t('admin.applicationsPage.approve')}
                               </button>
                               <button
                                 onClick={() => handleReject(app.id)}
                                 className="px-3 py-1 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors font-medium"
                               >
-                                Отклонить
+                                {t('admin.applicationsPage.reject')}
                               </button>
                             </>
                           )}
@@ -343,7 +343,7 @@ function AdminApplicationsPageContent() {
                               onClick={() => handleMarkFalse(app.id)}
                               className="px-3 py-1 bg-orange-100 text-orange-700 rounded-md hover:bg-orange-200 transition-colors font-medium"
                             >
-                              Ложный
+                              {t('admin.applicationsPage.falseCall')}
                             </button>
                           )}
                         </td>
@@ -368,13 +368,13 @@ function AdminApplicationsPageContent() {
                       {app.is_sos && (
                         <span className="badge bg-red-500 text-white">
                           <AlertTriangle className="w-3 h-3 mr-1" />
-                          SOS
+                          {t('admin.applicationsPage.sos')}
                         </span>
                       )}
                       {app.priority !== undefined && app.priority > 0 && (
                         <span className="badge bg-blue-500 text-white">
                           <Star className="w-3 h-3 mr-1" />
-                          Приоритет: {app.priority}
+                          {t('admin.applicationsPage.priorityLabel')}: {app.priority}
                         </span>
                       )}
                     </div>
@@ -431,7 +431,7 @@ function AdminApplicationsPageContent() {
                       className="btn bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg transition-all"
                     >
                       <Eye className="w-4 h-4 mr-1" />
-                      Просмотр
+                      {t('admin.applicationsPage.view')}
                     </Link>
                     {app.moderation_status === 'pending' && (
                       <>
@@ -440,14 +440,14 @@ function AdminApplicationsPageContent() {
                           className="btn bg-gradient-to-r from-green-500 to-green-600 text-white text-sm hover:from-green-600 hover:to-green-700 shadow-md hover:shadow-lg transition-all"
                         >
                           <CheckCircle className="w-4 h-4 mr-1" />
-                          Одобрить
+                          {t('admin.applicationsPage.approve')}
                         </button>
                         <button
                           onClick={() => handleReject(app.id)}
                           className="btn bg-gradient-to-r from-red-500 to-red-600 text-white text-sm hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg transition-all"
                         >
                           <XCircle className="w-4 h-4 mr-1" />
-                          Отклонить
+                          {t('admin.applicationsPage.reject')}
                         </button>
                       </>
                     )}
@@ -457,14 +457,14 @@ function AdminApplicationsPageContent() {
                         className="btn bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm hover:from-orange-600 hover:to-orange-700 shadow-md hover:shadow-lg transition-all"
                       >
                         <AlertTriangle className="w-4 h-4 mr-1" />
-                        Ложный
+                        {t('admin.applicationsPage.falseCall')}
                       </button>
                     )}
                   </div>
 
                   {app.responses_count !== undefined && app.responses_count > 0 && (
                     <div className="text-sm text-blue-600 font-medium mt-2">
-                      {app.responses_count} откликов
+                      {app.responses_count} {t('admin.applicationsPage.responsesCount')}
                     </div>
                   )}
                 </div>
@@ -484,4 +484,3 @@ export default function AdminApplicationsPage() {
     </Suspense>
   );
 }
-

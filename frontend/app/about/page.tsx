@@ -15,25 +15,17 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-blue-700 mb-4">
-              {language === 'ru' ? 'О проекте ASAR.kz' : language === 'kk' ? 'ASAR.kz жобасы туралы' : 'About ASAR.kz'}
+              {t('aboutPage.title')}
             </h1>
             <p className="text-xl text-gray-600">
-              {language === 'ru' 
-                ? 'Платформа для экстренной помощи и обмена ресурсами в Казахстане'
-                : language === 'kk'
-                ? 'Қазақстанда шұғыл көмек және ресурстар алмасу платформасы'
-                : 'Platform for emergency help and resource exchange in Kazakhstan'}
+              {t('aboutPage.subtitle')}
             </p>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
             <div className="prose max-w-none">
               <p className="text-lg text-gray-700 mb-6">
-                {language === 'ru'
-                  ? 'ASAR.kz - это платформа для экстренной помощи и обмена ресурсами в чрезвычайных ситуациях. Наша миссия - помочь людям быстро находить помощь и оказывать поддержку друг другу в трудные моменты.'
-                  : language === 'kk'
-                  ? 'ASAR.kz - бұл төтенше жағдайларда шұғыл көмек және ресурстар алмасу платформасы. Біздің миссиямыз - адамдарға тез көмек табуға және қиын сәттерде бір-біріне қолдау көрсетуге көмектесу.'
-                  : 'ASAR.kz is a platform for emergency help and resource exchange in emergency situations. Our mission is to help people quickly find help and support each other in difficult times.'}
+                {t('aboutPage.intro')}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -43,14 +35,10 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold mb-2">
-                      {language === 'ru' ? 'Экстренная помощь' : language === 'kk' ? 'Шұғыл көмек' : 'Emergency Help'}
+                      {t('aboutPage.cards.emergency.title')}
                     </h3>
                     <p className="text-gray-600">
-                      {language === 'ru'
-                        ? 'Быстрое создание заявок на экстренную помощь с геолокацией'
-                        : language === 'kk'
-                        ? 'Геолокациямен шұғыл көмекке тез өтініштер жасау'
-                        : 'Quick creation of emergency help requests with geolocation'}
+                      {t('aboutPage.cards.emergency.description')}
                     </p>
                   </div>
                 </div>
@@ -61,14 +49,10 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold mb-2">
-                      {language === 'ru' ? 'Волонтерство' : language === 'kk' ? 'Еріктілік' : 'Volunteering'}
+                      {t('aboutPage.cards.volunteering.title')}
                     </h3>
                     <p className="text-gray-600">
-                      {language === 'ru'
-                        ? 'Откликайтесь на заявки и помогайте нуждающимся'
-                        : language === 'kk'
-                        ? 'Өтініштерге жауап беріп, қажеттілерге көмектесіңіз'
-                        : 'Respond to applications and help those in need'}
+                      {t('aboutPage.cards.volunteering.description')}
                     </p>
                   </div>
                 </div>
@@ -79,14 +63,10 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold mb-2">
-                      {language === 'ru' ? 'Геолокация' : language === 'kk' ? 'Геолокация' : 'Geolocation'}
+                      {t('aboutPage.cards.geolocation.title')}
                     </h3>
                     <p className="text-gray-600">
-                      {language === 'ru'
-                        ? 'Точное определение местоположения для быстрой помощи'
-                        : language === 'kk'
-                        ? 'Жылдам көмек үшін дәл орналасқан жерін анықтау'
-                        : 'Accurate location determination for quick help'}
+                      {t('aboutPage.cards.geolocation.description')}
                     </p>
                   </div>
                 </div>
@@ -97,14 +77,10 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold mb-2">
-                      {language === 'ru' ? 'Сообщество' : language === 'kk' ? 'Қауымдастық' : 'Community'}
+                      {t('aboutPage.cards.community.title')}
                     </h3>
                     <p className="text-gray-600">
-                      {language === 'ru'
-                        ? 'Рейтинговая система для надежных помощников'
-                        : language === 'kk'
-                        ? 'Сенімді көмекшілер үшін рейтингтік жүйе'
-                        : 'Rating system for reliable helpers'}
+                      {t('aboutPage.cards.community.description')}
                     </p>
                   </div>
                 </div>
@@ -114,14 +90,10 @@ export default function AboutPage() {
 
           <div className="bg-blue-600 rounded-lg shadow-sm border border-blue-700 p-8 text-white text-center">
             <h2 className="text-2xl font-bold mb-4">
-              {language === 'ru' ? 'Присоединяйтесь к нам!' : language === 'kk' ? 'Бізбен бірге болыңыз!' : 'Join us!'}
+              {t('aboutPage.joinTitle')}
             </h2>
             <p className="text-lg mb-6 text-blue-100">
-              {language === 'ru'
-                ? 'Помогайте другим и получайте помощь, когда она нужна'
-                : language === 'kk'
-                ? 'Басқаларға көмектесіңіз және қажет болғанда көмек алыңыз'
-                : 'Help others and get help when you need it'}
+              {t('aboutPage.joinSubtitle')}
             </p>
             <Link href="/sign-up" className="btn bg-white text-blue-700 hover:bg-gray-50 inline-block border border-gray-300">
               {t('nav.signup')}
@@ -132,4 +104,3 @@ export default function AboutPage() {
     </div>
   );
 }
-

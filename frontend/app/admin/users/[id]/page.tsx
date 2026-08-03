@@ -138,7 +138,7 @@ export default function AdminUserDetailPage() {
 
   const handleBlock = async () => {
     if (!userDetail) return;
-    if (!confirm(`Заблокировать пользователя на ${blockDays} дней?`)) return;
+    if (!confirm(`${t('adminUsersPage.confirmBlockPrefix')} ${blockDays} ${t('adminUsersPage.confirmBlockSuffix')}`)) return;
 
     try {
       await apiClient.blockUser(userDetail.id, blockDays, blockReason);
@@ -153,7 +153,7 @@ export default function AdminUserDetailPage() {
 
   const handleUnblock = async () => {
     if (!userDetail) return;
-    if (!confirm('Разблокировать пользователя?')) return;
+    if (!confirm(t('adminUsersPage.confirmUnblock'))) return;
 
     try {
       await apiClient.unblockUser(userDetail.id);
@@ -166,7 +166,7 @@ export default function AdminUserDetailPage() {
 
   const handleDelete = async () => {
     if (!userDetail) return;
-    if (!confirm('ВНИМАНИЕ! Это действие необратимо. Все данные пользователя будут удалены. Продолжить?')) return;
+    if (!confirm(t('adminUsersPage.confirmDeleteDetail'))) return;
 
     try {
       await apiClient.deleteUser(userDetail.id);
@@ -185,10 +185,10 @@ export default function AdminUserDetailPage() {
       emergency: 'bg-yellow-100 text-yellow-800',
     };
     const labels: Record<string, string> = {
-      food: 'Продукты',
-      medicine: 'Медицина',
-      shelter: 'Убежище',
-      emergency: 'Экстренная помощь',
+      food: t('admin.applicationsPage.food'),
+      medicine: t('admin.applicationsPage.medicine'),
+      shelter: t('admin.applicationsPage.shelter'),
+      emergency: t('admin.applicationsPage.emergency'),
     };
     return (
       <span className={`badge ${colors[category] || 'bg-gray-100 text-gray-800'}`}>
@@ -221,7 +221,7 @@ export default function AdminUserDetailPage() {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="container mx-auto px-4">
-          <p className="text-gray-600">Пользователь не найден</p>
+          <p className="text-gray-600">{t('adminUsersPage.notFound')}</p>
         </div>
       </div>
     );
@@ -232,7 +232,7 @@ export default function AdminUserDetailPage() {
       <div className="container mx-auto px-4">
         <Link href="/admin/users" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Назад к списку пользователей
+          {t('adminUsersPage.backToList')}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -241,7 +241,7 @@ export default function AdminUserDetailPage() {
               <div className="text-center">
                 {userDetail.avatar ? (
                   <img
-                    src={`/asar/api/uploads/${userDetail.avatar}`}
+                    src={`/api/uploads/${userDetail.avatar}`}
                     alt={userDetail.first_name}
                     className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-blue-500"
                   />
@@ -278,15 +278,15 @@ export default function AdminUserDetailPage() {
                     ))}
                   </div>
                   <p className="text-sm text-blue-100">
-                    На основе {userDetail.rating_count} оценок
+                    {t('adminUsersPage.basedOn')} {userDetail.rating_count} {t('adminUsersPage.ratingsWord')}
                   </p>
                 </div>
 
                 {userDetail.badge && (
                   <div className="mb-4">
                     <span className="badge bg-blue-500 text-white text-lg px-4 py-2">
-                      {userDetail.badge === 'verified_help_source' && '✓ Проверенный источник помощи'}
-                      {userDetail.badge === 'reliable_volunteer' && '❤ Надежный волонтер'}
+                      {userDetail.badge === 'verified_help_source' && `✓ ${t('adminUsersPage.verifiedHelpSource')}`}
+                      {userDetail.badge === 'reliable_volunteer' && `❤ ${t('adminUsersPage.reliableVolunteer')}`}
                       {!['verified_help_source', 'reliable_volunteer'].includes(userDetail.badge) && userDetail.badge}
                     </span>
                   </div>
@@ -294,30 +294,30 @@ export default function AdminUserDetailPage() {
 
                 <div className="space-y-2">
                   {userDetail.is_super_admin && (
-                    <span className="badge bg-red-500 text-white">Супер-администратор</span>
+                    <span className="badge bg-red-500 text-white">{t('adminUsersPage.superAdministrator')}</span>
                   )}
                   {userDetail.isAdmin && !userDetail.is_super_admin && (
                     <span className="badge bg-yellow-500 text-white">
                       <Shield className="w-3 h-3 mr-1 inline" />
-                      Администратор
+                      {t('adminUsersPage.administrator')}
                     </span>
                   )}
                   {!userDetail.isAdmin && (
-                    <span className="badge bg-blue-500 text-white">Пользователь</span>
+                    <span className="badge bg-blue-500 text-white">{t('adminUsersPage.regularUser')}</span>
                   )}
                   {userDetail.is_blocked && (
                     <div className="mt-2">
                       <span className="badge bg-red-600 text-white">
                         <Ban className="w-3 h-3 mr-1 inline" />
-                        Заблокирован
+                        {t('adminUsersPage.blocked')}
                         {userDetail.blocked_until && (
                           <span className="ml-1">
-                            до {new Date(userDetail.blocked_until).toLocaleDateString('ru-RU')}
+                            {t('adminUsersPage.until')} {new Date(userDetail.blocked_until).toLocaleDateString('ru-RU')}
                           </span>
                         )}
                       </span>
                       {userDetail.blocked_reason && (
-                        <p className="text-sm text-red-600 mt-1">Причина: {userDetail.blocked_reason}</p>
+                        <p className="text-sm text-red-600 mt-1">{t('adminUsersPage.reason')} {userDetail.blocked_reason}</p>
                       )}
                     </div>
                   )}
@@ -327,7 +327,7 @@ export default function AdminUserDetailPage() {
 
             {!userDetail.is_super_admin && (
               <div className="bg-white rounded-lg shadow-sm border border-red-200 p-6">
-                <h3 className="text-lg font-bold text-red-700 mb-4">Опасные действия</h3>
+                <h3 className="text-lg font-bold text-red-700 mb-4">{t('adminUsersPage.dangerZone')}</h3>
                 
                 {userDetail.is_blocked ? (
                   <button
@@ -335,13 +335,13 @@ export default function AdminUserDetailPage() {
                     className="w-full btn bg-green-600 text-white hover:bg-green-700 mb-4 flex items-center justify-center gap-2"
                   >
                     <Unlock className="w-5 h-5" />
-                    Разблокировать
+                    {t('adminUsersPage.unblock')}
                   </button>
                 ) : (
                   <div className="space-y-3 mb-4">
                     <div>
                       <label className="block text-sm text-gray-600 mb-1">
-                        Срок блокировки (дней):
+                        {t('adminUsersPage.blockDaysLabel')}
                       </label>
                       <input
                         type="number"
@@ -354,14 +354,14 @@ export default function AdminUserDetailPage() {
                     </div>
                     <div>
                       <label className="block text-sm text-gray-600 mb-1">
-                        Причина блокировки:
+                        {t('adminUsersPage.blockReasonLabel')}
                       </label>
                       <textarea
                         value={blockReason}
                         onChange={(e) => setBlockReason(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         rows={3}
-                        placeholder="Например: Ложные вызовы, нарушение правил"
+                        placeholder={t('adminUsersPage.blockReasonPlaceholder')}
                       />
                     </div>
                     <button
@@ -369,7 +369,7 @@ export default function AdminUserDetailPage() {
                       className="w-full btn bg-yellow-600 text-white hover:bg-yellow-700 flex items-center justify-center gap-2"
                     >
                       <Ban className="w-5 h-5" />
-                      Заблокировать
+                      {t('adminUsersPage.block')}
                     </button>
                   </div>
                 )}
@@ -379,7 +379,7 @@ export default function AdminUserDetailPage() {
                   className="w-full btn bg-red-700 text-white hover:bg-red-800 flex items-center justify-center gap-2"
                 >
                   <Trash2 className="w-5 h-5" />
-                  Удалить пользователя
+                  {t('adminUsersPage.deleteUser')}
                 </button>
               </div>
             )}
@@ -387,7 +387,7 @@ export default function AdminUserDetailPage() {
             {userDetail.is_super_admin && (
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <p className="text-gray-600 text-sm">
-                  Нельзя заблокировать или удалить супер-администратора
+                  {t('adminUsersPage.cannotBlockSuperAdmin')}
                 </p>
               </div>
             )}
@@ -395,37 +395,37 @@ export default function AdminUserDetailPage() {
 
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Статистика</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">{t('adminUsersPage.stats')}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-gray-600 text-sm mb-1">{t('admin.users.totalApplications')}</p>
                   <p className="text-2xl font-bold text-gray-900">{userDetail.total_applications}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600 text-sm mb-1">Решенных</p>
+                  <p className="text-gray-600 text-sm mb-1">{t('adminUsersPage.resolved')}</p>
                   <p className="text-2xl font-bold text-green-600">{userDetail.resolved_applications}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600 text-sm mb-1">Ложных вызовов</p>
+                  <p className="text-gray-600 text-sm mb-1">{t('adminUsersPage.falseCallsCount')}</p>
                   <p className="text-2xl font-bold text-red-600">{userDetail.false_calls_count}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600 text-sm mb-1">Помог людям</p>
+                  <p className="text-gray-600 text-sm mb-1">{t('adminUsersPage.helpedPeople')}</p>
                   <p className="text-2xl font-bold text-blue-600">{userDetail.help_given}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600 text-sm mb-1">Всего откликов</p>
+                  <p className="text-gray-600 text-sm mb-1">{t('adminDashboard.totalResponses')}</p>
                   <p className="text-2xl font-bold text-gray-900">{userDetail.help_total}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600 text-sm mb-1">Получено оценок</p>
+                  <p className="text-gray-600 text-sm mb-1">{t('adminUsersPage.receivedRatings')}</p>
                   <p className="text-2xl font-bold text-yellow-600">{userDetail.rating_count}</p>
                 </div>
               </div>
             </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Последние заявки</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">{t('adminUsersPage.recentApplications')}</h3>
               {recentApplications.length > 0 ? (
                 <div className="space-y-3">
                   {recentApplications.map((app) => (
@@ -440,11 +440,11 @@ export default function AdminUserDetailPage() {
                             {app.is_sos && (
                               <span className="badge bg-red-500 text-white">
                                 <AlertTriangle className="w-3 h-3 mr-1 inline" />
-                                SOS
+                                {t('admin.applicationsPage.sos')}
                               </span>
                             )}
                             {app.is_false_call && (
-                              <span className="badge bg-red-600 text-white">Ложный вызов</span>
+                              <span className="badge bg-red-600 text-white">{t('adminUsersPage.falseCallBadge')}</span>
                             )}
                           </div>
                           <p className="text-gray-700 mb-2 line-clamp-2">
@@ -461,14 +461,14 @@ export default function AdminUserDetailPage() {
                                 minute: '2-digit'
                               })}
                             </span>
-                            <span>Статус: {app.moderation_status}</span>
+                            <span>{t('admin.applicationsPage.status')}: {app.moderation_status}</span>
                           </div>
                         </div>
                         <Link
                           href={`/applications/${app.id}`}
                           className="btn btn-outline text-sm ml-4"
                         >
-                          Просмотр
+                          {t('admin.applicationsPage.view')}
                         </Link>
                       </div>
                     </div>
@@ -484,4 +484,3 @@ export default function AdminUserDetailPage() {
     </div>
   );
 }
-
