@@ -230,13 +230,13 @@ export default function ApplicationDetailPage() {
                   <div key={media.id} className="relative">
                     {media.file_type?.startsWith('image/') ? (
                       <img
-                        src={`/api/uploads/${media.file_path}`}
+                        src={`/asar/api/uploads/${media.file_path}`}
                         alt="Media"
                         className="w-full h-32 sm:h-48 object-cover rounded-lg"
                       />
                     ) : (
                       <a
-                        href={`/api/uploads/${media.file_path}`}
+                        href={`/asar/api/uploads/${media.file_path}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block p-3 sm:p-4 h-32 sm:h-48 bg-gray-100 rounded-lg text-center hover:bg-gray-200 flex flex-col items-center justify-center"

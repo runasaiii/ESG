@@ -201,7 +201,7 @@ export default function AdminUsersPage() {
                           <div className="flex items-center gap-3">
                             {u.avatar ? (
                               <img
-                                src={`/api/uploads/${u.avatar}`}
+                                src={`/asar/api/uploads/${u.avatar}`}
                                 alt={u.first_name}
                                 className="w-10 h-10 rounded-full object-cover"
                               />
@@ -300,7 +300,7 @@ export default function AdminUsersPage() {
                     <div className="flex items-center gap-3">
                       {u.avatar ? (
                         <img
-                          src={`/uploads/${u.avatar}`}
+                          src={`/asar/api/uploads/${u.avatar}`}
                           alt={u.first_name}
                           className="w-12 h-12 rounded-full object-cover"
                         />

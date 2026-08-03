@@ -143,7 +143,7 @@ export default function EditProfilePage() {
       });
       setCitySearch(userCity);
       if (userData.avatar) {
-        setPreview(`/api/uploads/${userData.avatar}`);
+        setPreview(`/asar/api/uploads/${userData.avatar}`);
       }
       
       if (data.name_changes_remaining !== undefined) {

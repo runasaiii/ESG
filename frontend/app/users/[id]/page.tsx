@@ -78,7 +78,7 @@ export default function UserProfilePage() {
             <div className="text-center">
               {user.avatar ? (
                 <img
-                  src={`/api/uploads/${user.avatar}`}
+                  src={`/asar/api/uploads/${user.avatar}`}
                   alt={user.first_name}
                   className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-primary"
                 />

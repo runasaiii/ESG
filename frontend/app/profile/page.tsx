@@ -158,7 +158,7 @@ export default function ProfilePage() {
             <div className="mb-4">
               {user.avatar ? (
                 <img
-                  src={`/api/uploads/${user.avatar}`}
+                  src={`/asar/api/uploads/${user.avatar}`}
                   alt="Avatar"
                   className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary"
                 />
@@ -449,7 +449,7 @@ export default function ProfilePage() {
                     >
                       {app.author.avatar ? (
                         <img
-                          src={`/api/uploads/${app.author.avatar}`}
+                          src={`/asar/api/uploads/${app.author.avatar}`}
                           alt={app.author.first_name}
                           className="w-10 h-10 rounded-full object-cover"
                         />
@@ -483,7 +483,7 @@ export default function ProfilePage() {
                       <div className="flex items-center space-x-3">
                         {rating.rater?.avatar ? (
                           <img
-                            src={`/api/uploads/${rating.rater.avatar}`}
+                            src={`/asar/api/uploads/${rating.rater.avatar}`}
                             alt={rating.rater.first_name}
                             className="w-10 h-10 rounded-full object-cover"
                           />

@@ -241,7 +241,7 @@ export default function AdminUserDetailPage() {
               <div className="text-center">
                 {userDetail.avatar ? (
                   <img
-                    src={`/api/uploads/${userDetail.avatar}`}
+                    src={`/asar/api/uploads/${userDetail.avatar}`}
                     alt={userDetail.first_name}
                     className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-blue-500"
                   />
