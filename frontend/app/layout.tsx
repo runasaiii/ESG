@@ -10,6 +10,11 @@ const inter = Inter({ subsets: ["latin", "cyrillic"] });
 export const metadata: Metadata = {
   title: "ASAR.kz - Экстренная помощь и обмен ресурсами",
   description: "Платформа для экстренной помощи и обмена ресурсами в Казахстане",
+  icons: {
+    icon: "/asar/placeholder-logo.svg",
+    shortcut: "/asar/ASARlogoo3.png",
+    apple: "/asar/ASARlogoo3.png",
+  },
 };
 
 export default function RootLayout({
